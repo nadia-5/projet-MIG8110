@@ -6,10 +6,11 @@ commands = [
     ,
     <<-EOT
     CREATE TABLE origin (
-        origin_id integer PRIMARY KEY,
-        origin_code VARCHAR(50) NOT NULL,
-        origin_description TEXT
-    );
+    origin_id serial primary key,
+    origin_code varchar(255) unique not null,
+    origin_description varchar(255),
+    constraint chk_origin_code_lower check (origin_code = lower(origin_code))
+);
     EOT
   ]
 }
