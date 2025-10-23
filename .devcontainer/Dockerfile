@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
 
 # Optional: add Python, pip, jq, etc.
 RUN apt-get install -y python3 python3-pip jq
+RUN pip install pdm
 
 WORKDIR /workspace
 CMD [ "bash" ]

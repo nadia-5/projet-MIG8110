@@ -9,7 +9,8 @@ create table marketing_qualified_lead (
     mql_id varchar(255) primary key,
     first_contact_date integer not null,
     landing_page_id integer,
-    origin_id integer references origin(origin_id)
+    origin_id integer,
+    foreign key (origin_id) references origin(origin_id)
 );
     EOT
   ]

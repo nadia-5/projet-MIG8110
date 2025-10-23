@@ -8,10 +8,11 @@ commands = [
 
 create table review_message (
     review_message_id serial primary key,
-    review_id varchar(255) not null references order_review(review_id),
+    review_id varchar(255) not null,
     sender_role varchar(255),
     message varchar(255),
-    creation_date timestamp
+    creation_date timestamp,
+    foreign key (review_id) references order_review(review_id)
 );
     EOT
   ]

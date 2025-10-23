@@ -7,10 +7,12 @@ commands = [
     <<-EOT
     CREATE TABLE orders (
     order_id varchar(255) primary key,
-    customer_id varchar(255) not null references customer(customer_id),
-    status_id integer references order_status_type(order_status_type_id),
+    customer_id integer not null,
+    status_id integer ,
     purchase_timestamp timestamp,
-    estimated_delivery_date timestamp
+    estimated_delivery_date timestamp,
+    foreign key (customer_id) references customer(customer_id),
+    foreign key (status_id) references order_status_type(order_status_type_id)
 );
     EOT
   ]
