@@ -1,7 +1,7 @@
 resource "postgresql_script" "location" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS location;
+    DROP TABLE IF EXISTS location cascade;
     EOT
     ,
     <<-EOT

@@ -6,12 +6,15 @@ commands = [
     ,
     <<-EOT
 create table closed_deal (
-    mql_id varchar(255) not null references marketing_qualified_lead(mql_id),
-    lead_type_id integer references lead_type(lead_type_id),
-    seller_id varchar(255) not null references seller(seller_id),
+    mql_id varchar(255) not null ,
+    lead_type_id integer ,
+    seller_id integer not null,
     won_date integer not null,
     business_segment varchar(255),
-    constraint pk_closed_deal primary key (mql_id, seller_id)
+    constraint pk_closed_deal primary key (mql_id, seller_id),
+    foreign key (mql_id) references marketing_qualified_lead(mql_id),
+    foreign key (lead_type_id) references lead_type(lead_type_id),
+    foreign key (seller_id) references seller(seller_id)
 );
     EOT
   ]

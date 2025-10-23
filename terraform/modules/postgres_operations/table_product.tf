@@ -7,7 +7,7 @@ commands = [
     <<-EOT
 create table product (
     product_id varchar(255) primary key,
-    product_category_id integer references product_category(product_category_id),
+    product_category_id integer,
     name_length integer,
     description_length integer,
     photos_qty integer,
@@ -21,7 +21,8 @@ create table product (
     constraint chk_product_weight_g check (weight_g is null or weight_g >= 0),
     constraint chk_product_length_cm check (length_cm is null or length_cm >= 0),
     constraint chk_product_height_cm check (height_cm is null or height_cm >= 0),
-    constraint chk_product_width_cm check (width_cm is null or width_cm >= 0)
+    constraint chk_product_width_cm check (width_cm is null or width_cm >= 0),
+    foreign key (product_category_id) references product_category(product_category_id)
 );
     EOT
   ]
