@@ -6,9 +6,10 @@ commands = [
     ,
     <<-EOT
     CREATE TABLE payment_type (
-        payment_type_id integer PRIMARY KEY,
-        payment_type_code VARCHAR(50) NOT NULL,
-        payment_type_description TEXT
+    payment_type_id serial primary key,
+    payment_type_code varchar(255) unique not null,
+    payment_type_description varchar(255),
+    constraint chk_payment_type_code_lower check (payment_type_code = lower(payment_type_code))
     );
     EOT
   ]
