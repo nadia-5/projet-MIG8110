@@ -11,7 +11,7 @@ variable "minio_password" {
 variable "db_host" {
     type    = string
     description = "PostgreSQL database host"
-    default = "postgres_operations"
+    default = "postgres"
 }
 variable "db_port" {
     type    = number

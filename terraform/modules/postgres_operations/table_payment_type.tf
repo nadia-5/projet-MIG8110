@@ -1,7 +1,7 @@
 resource "postgresql_script" "payment_type" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS payment_type;
+    DROP TABLE IF EXISTS payment_type cascade;
     EOT
     ,
     <<-EOT

@@ -27,5 +27,8 @@ lint = [
 dev = [
     "pytest",
     "polars",
-    "pandas"
+    "pandas",
+    "minio",
+    "requests",
+    "s3fs"
 ]
