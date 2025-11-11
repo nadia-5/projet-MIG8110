@@ -1,7 +1,7 @@
 resource "postgresql_script" "lead_type" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS lead_type;
+    DROP TABLE IF EXISTS lead_type cascade;
     EOT
     ,
     <<-EOT

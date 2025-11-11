@@ -1,7 +1,7 @@
 resource "postgresql_script" "review_message" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS review_message;
+    DROP TABLE IF EXISTS review_message cascade;
     EOT
     ,
     <<-EOT

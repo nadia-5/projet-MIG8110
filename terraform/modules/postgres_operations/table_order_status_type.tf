@@ -1,7 +1,7 @@
 resource "postgresql_script" "order_status_type" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS order_status_type;
+    DROP TABLE IF EXISTS order_status_type cascade;
     EOT
     ,
     <<-EOT

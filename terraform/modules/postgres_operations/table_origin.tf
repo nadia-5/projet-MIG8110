@@ -1,7 +1,7 @@
 resource "postgresql_script" "origin" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS origin;
+    DROP TABLE IF EXISTS origin cascade;
     EOT
     ,
     <<-EOT

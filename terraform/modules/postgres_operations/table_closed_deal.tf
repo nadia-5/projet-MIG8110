@@ -1,7 +1,7 @@
 resource "postgresql_script" "closed_deal" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS closed_deal;
+    DROP TABLE IF EXISTS closed_deal cascade;
     EOT
     ,
     <<-EOT

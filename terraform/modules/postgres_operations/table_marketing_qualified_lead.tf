@@ -1,7 +1,7 @@
 resource "postgresql_script" "marketing_qualified_lead" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS marketing_qualified_lead;
+    DROP TABLE IF EXISTS marketing_qualified_lead cascade;
     EOT
     ,
     <<-EOT

@@ -2,8 +2,8 @@ terraform {
   required_providers {
     
     minio = {
-      source  = "refaktory/minio"
-      version = "0.1.0" 
+      source  = "aminueza/minio"
+      version = "3.11.3"
     }
 
     postgresql = {
@@ -15,11 +15,11 @@ terraform {
 }
 
 provider "minio" {
-  alias    = "minio_provider"
-  endpoint      = "minio:9000"
-  access_key    =  var.minio_user
-  secret_key    =  var.minio_password
-  ssl           = false
+  alias           = "minio_provider"
+  minio_server    = "minio:9000"
+  minio_user      =  var.minio_user
+  minio_password  =  var.minio_password
+  minio_ssl       = false
 }
 
 provider "postgresql" {

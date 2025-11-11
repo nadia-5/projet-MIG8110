@@ -1,7 +1,7 @@
 resource "postgresql_script" "product" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS product;
+    DROP TABLE IF EXISTS product cascade;
     EOT
     ,
     <<-EOT
