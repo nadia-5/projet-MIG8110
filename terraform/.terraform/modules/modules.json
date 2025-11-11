@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"minio_objects","Source":"./modules/minio","Dir":"modules/minio"},{"Key":"postgres_operations","Source":"./modules/postgres_operations","Dir":"modules/postgres_operations"}]}
