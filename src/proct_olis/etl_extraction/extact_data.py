@@ -2,6 +2,7 @@ import polars as pl
 import s3fs
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 def save_file_path(bucket_name: str, base_file: pl.DataFrame, date: str = None) -> str:
@@ -36,6 +37,8 @@ fs = s3fs.S3FileSystem(
 )
 
 >>>>>>> 737b56b (feat: add etl extraction)
+=======
+>>>>>>> 338b35b (feat: debut de creation de framework)
 # Lire directement un CSV depuis MinIO
 customer_df = read_file_path("sources", "customers_dataset")
 geolocation_df = read_file_path("sources", "geolocation_dataset")
@@ -59,6 +62,7 @@ distinct_dates = (
 
 for date in distinct_dates["order_purchase_timestamp"]:
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     order_historique_result_df = orders_df.filter(pl.col("order_purchase_timestamp").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S").cast(pl.Date) < date)
 
@@ -101,19 +105,52 @@ for date in distinct_dates["order_purchase_timestamp"]:
     )
 =======
     order_result_df = orders_df.filter(pl.col("order_purchase_timestamp").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S").cast(pl.Date) <= date)
+=======
+    order_historique_result_df = orders_df.filter(pl.col("order_purchase_timestamp").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S").cast(pl.Date) < date)
+>>>>>>> 338b35b (feat: debut de creation de framework)
 
-    order_reviews_result_df = order_result_df.join(order_reviews_df, on="order_id", how="inner").select(order_reviews_df.columns)
+    order_result_df = orders_df.filter(pl.col("order_purchase_timestamp").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S").cast(pl.Date) == date)
+    
+    order_reviews_result_df = (
+        order_result_df
+        .join(order_reviews_df, on="order_id", how="inner").select(order_reviews_df.columns)
+    )
 
-    order_items_result_df = order_result_df.join(order_items_df, on="order_id", how="inner").select(order_items_df.columns)
+    order_items_result_df = (
+        order_result_df
+        .join(order_items_df, on="order_id", how="inner").select(order_items_df.columns)
+    )
 
-    order_payments_result_df = order_result_df.join(order_payments_df, on="order_id", how="inner").select(order_payments_df.columns)
+    order_items_historique_result_df = order_historique_result_df.join(order_items_df, on="order_id", how="inner").select(order_items_df.columns)
+    
 
-    customer_result_df = order_result_df.join(customer_df, on="customer_id", how="inner").select(customer_df.columns)
+    order_payments_result_df = (
+        order_result_df
+        .join(order_payments_df, on="order_id", how="inner").select(order_payments_df.columns)
+    )
 
-    sellers_result_df = order_items_result_df.join(sellers_df, on="seller_id", how="inner").select(sellers_df.columns)
+    customer_result_df = (
+        order_result_df
+        .join(order_historique_result_df, on="customer_id", how="anti")
+        .join(customer_df, on="customer_id", how="inner").select(customer_df.columns)
+    )
 
+<<<<<<< HEAD
     products_result_df = order_items_result_df.join(products_df, on="product_id", how="inner").select(products_df.columns)
 >>>>>>> 737b56b (feat: add etl extraction)
+=======
+    sellers_result_df = (
+        order_items_result_df
+        .join(order_items_historique_result_df, on="seller_id", how="anti")
+        .join(sellers_df, on="seller_id", how="inner").select(sellers_df.columns)
+    )
+
+    products_result_df = (
+        order_items_result_df
+        .join(order_items_historique_result_df, on="product_id", how="anti")
+        .join(products_df, on="product_id", how="inner").select(products_df.columns)
+    )
+>>>>>>> 338b35b (feat: debut de creation de framework)
 
 
     # Chemin S3 (compatible ARN)
