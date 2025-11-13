@@ -13,7 +13,11 @@ dependencies = [
     "minio",
     "requests",
     "s3fs",
-    "dotenv"
+    "dotenv",
+    "connectorx",
+    "pyarrow",
+    "sqlalchemy",
+    "psycopg2-binary"
 ]
 requires-python = ">=3.10"
 readme = "README.md"
