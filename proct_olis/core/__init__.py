@@ -9,6 +9,7 @@ from proct_olis.core.config import Config
 from proct_olis.core.reader import Reader
 from proct_olis.settings import Settings
 from proct_olis.core.writter import Writter
+from proct_olis.core.utilities import Utilities
 
 @dataclass
 class TransformationBase:
@@ -26,6 +27,7 @@ class TransformationBase:
             self.config = Config.load_config(Path(inspect.getfile(self.__class__)).with_name("config.yml").as_posix())
 
         self.reader = Reader(self.process_name, self.config, self.settings)
+        self.utilities = Utilities()
         self.pre_transformation()
 
     def pre_transformation(self):

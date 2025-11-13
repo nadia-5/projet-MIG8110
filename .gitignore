@@ -7,3 +7,4 @@ pdm.lock
 __pypackages__/
 __pycache__/
 .env
+local_run.ipynb

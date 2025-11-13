@@ -7,7 +7,7 @@ class Destination:
     schema: str 
     database: str
     destination_type: str
-    primary_keys: list[str] | None = None
+    primary_key: str | None
     business_keys: list[str] | None = None
     kind: str | None = None
     bucket_name: str | None = None
@@ -21,7 +21,7 @@ class Destination:
             schema=data.get('schema', None),
             database=data.get('database', None),
             destination_type=data.get('destination_type', None),
-            primary_keys=data.get('primary_keys', None),
+            primary_key=data.get('primary_key', None),
             business_keys=data.get('business_keys', None),
             kind=data.get('kind', None),
             bucket_name=data.get('bucket_name', None),
