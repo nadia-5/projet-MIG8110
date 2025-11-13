@@ -17,7 +17,9 @@ dependencies = [
     "connectorx",
     "pyarrow",
     "sqlalchemy",
-    "psycopg2-binary"
+    "psycopg2-binary",
+    "googletrans",
+    "rapidfuzz"
 ]
 requires-python = ">=3.10"
 readme = "README.md"

@@ -1,4 +1,7 @@
+import asyncio
 import polars as pl
+from googletrans import Translator
+import unicodedata
 
 class Utilities:
 
@@ -40,3 +43,27 @@ class Utilities:
             raise ValueError("Mode non supporté: choisir 'auto' ou 'hash'")
         
         return df
+
+
+    async def translate_column(self, words: list) -> pl.DataFrame:
+        tasks = [self._translate_word(word) for word in words]
+        results = await asyncio.gather(*tasks)
+        return zip(words, results)
+    
+    async def _translate_word(self, word: str) -> str:
+        translator = Translator()
+        print(f"Traduction de : {word}")
+        try:
+            translated = await translator.translate(word, dest='en')
+            return translated.text
+        except Exception as e:
+            raise RuntimeError(f"Erreur de traduction pour le mot '{word}': {e}")
+        
+    
+
+
+    def remove_accents(self, text: str) -> str:
+        # Décompose les caractères accentués en base + diacritiques
+        nfkd_form = unicodedata.normalize("NFKD", text)
+        # Filtre les diacritiques (catégorie Mn = Mark, Nonspacing)
+        return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
