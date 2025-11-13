@@ -1,0 +1,20 @@
+sources:
+  datalake.ref_geolocation:
+    type: s3
+    bucket_name: raw-data
+    file_name: ref-geolocation
+    file_extension: parquet
+    columns:
+      geolocation_zip_code_prefix: zip_code_prefix
+      geolocation_city: city
+      geolocation_state: state
+destination:
+  table: location
+  schema: public
+  primary_key: location_id
+  business_keys:
+    - zip_code_prefix
+    - city
+    - state
+  kind: append
+  destination_type: postgres_operational
