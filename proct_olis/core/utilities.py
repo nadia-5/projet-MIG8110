@@ -1,4 +1,5 @@
 import polars as pl
+import unicodedata
 
 class Utilities:
 
@@ -40,3 +41,9 @@ class Utilities:
             raise ValueError("Mode non supporté: choisir 'auto' ou 'hash'")
         
         return df
+
+    def remove_accents(self, text: str) -> str:
+        # Décompose les caractères accentués en base + diacritiques
+        nfkd_form = unicodedata.normalize("NFKD", text)
+        # Filtre les diacritiques (catégorie Mn = Mark, Nonspacing)
+        return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
