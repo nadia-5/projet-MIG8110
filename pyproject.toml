@@ -5,7 +5,16 @@ description = "Default template for PDM package"
 authors = [
     {name = "imen-bendai", email = "imen.bendai@outlook.com"},
 ]
-dependencies = []
+dependencies = [
+    "click",
+    "pyyaml",
+    "polars",
+    "pandas",
+    "minio",
+    "requests",
+    "s3fs",
+    "dotenv"
+]
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
@@ -26,9 +35,12 @@ lint = [
  
 dev = [
     "pytest",
-    "polars",
-    "pandas",
-    "minio",
-    "requests",
-    "s3fs"
+    "ipykernel"
 ]
+
+[project.scripts]
+transformation = "proct_olis.app:main"
+
+[tool.pdm.build]
+includes = []
+excludes = ["scripts/"]

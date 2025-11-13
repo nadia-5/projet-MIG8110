@@ -1,0 +1,10 @@
+sources:
+  datalake.orders:
+    type: s3
+    bucket_name: sources
+    file_name: orders_dataset
+    file_extension: csv
+destination:
+  destination_type: s3
+  bucket_name: raw-data
+  file_name: orders.parquet

@@ -1,0 +1,17 @@
+minio:
+  endpoint: ${minio_endpoint}
+  access_key: ${minio_access_key}
+  secret_key: ${minio_secret_key}
+  secure: false
+postgres_operational:
+  host: ${postgres_host}
+  port: ${postgres_port}
+  database: ${postgres_database}
+  user: ${postgres_user}
+  password: ${postgres_password}
+postgres_datawarehouse:
+  host: ${postgres_dw_host}
+  port: ${postgres_dw_port}
+  database: ${postgres_dw_database}
+  user: ${postgres_dw_user}
+  password: ${postgres_dw_password}
