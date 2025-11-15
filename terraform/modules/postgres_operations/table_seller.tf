@@ -6,7 +6,7 @@ commands = [
     ,
     <<-EOT
     CREATE TABLE seller (
-        seller_id integer PRIMARY KEY,
+        seller_id uuid PRIMARY KEY,
         seller_state char(2),
         seller_city varchar(64),
         seller_zip_code varchar(16),
