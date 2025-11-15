@@ -10,8 +10,9 @@ from string import Template
 class Config:
     destination: Destination
     sources: dict[str, Source]
-    table_sources: dict[str, str] = None
-    datalake_sources: dict[str, str] = None
+    operational_sources: dict[str, Source] = None
+    datawarehouse_sources: dict[str, Source] = None
+    datalake_sources: dict[str, Source] = None
 
     @classmethod
     def load_config(cls, path: str):
@@ -22,14 +23,16 @@ class Config:
     @classmethod
     def from_data(cls, data: Dict[str, Any]):
         sources = {name: Source.from_data(src) for name, src in data.get('sources', {}).items()}
-        table_sources = {name: Source.from_data(src) for name, src in data.get('sources', {}).items() if src['type'] == 'table'}
+        operational_sources = {name: Source.from_data(src) for name, src in data.get('sources', {}).items() if src['type'] == 'postgres_operational'}
+        datawarehouse_sources = {name: Source.from_data(src) for name, src in data.get('sources', {}).items() if src['type'] == 'postgres_datawarehouse'}
         datalake_sources = {name: Source.from_data(src) for name, src in data.get('sources', {}).items() if src['type'] == 's3'}
         destination = Destination.from_data(data['destination'])
         
         return cls(
             destination=destination,
             sources=sources,
-            table_sources=table_sources,
+            operational_sources=operational_sources,
+            datawarehouse_sources=datawarehouse_sources,
             datalake_sources=datalake_sources
         )
     

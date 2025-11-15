@@ -13,7 +13,7 @@ from proct_olis.core.utilities import Utilities
 
 @dataclass
 class TransformationBase:
-    entity_map: Dict[str, pl.DataFrame] = field(default_factory=dict)
+    entity_map: Dict[str, pl.DataFrame] = field(default_factory=dict[str, pl.DataFrame])
     final_df: pl.DataFrame | None = None
     config: Config | None = None
     settings: Settings | None = None

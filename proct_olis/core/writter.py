@@ -1,11 +1,10 @@
-import s3fs 
 import polars as pl
-from dataclasses import dataclass
 from proct_olis.core.config import Config
 from proct_olis.core.session import Session
 from proct_olis.settings import Settings
 from abc import ABC, abstractmethod
 from proct_olis.core.utilities import Utilities
+from datetime import datetime
 
 
 class WritterBase(ABC):
@@ -15,6 +14,7 @@ class WritterBase(ABC):
         self.settings = settings
         self.df = df
         self.utilities = Utilities()
+        self.current_datetime = datetime.now()
 
     @abstractmethod
     def write(self):
@@ -51,13 +51,28 @@ class tableWritter(WritterBase):
         historical_df = pl.read_database_uri(query=query, uri=self.pg_conn)
 
         print(historical_df.head())
+
+        if self.destination.business_keys:
+            business_keys = self.destination.business_keys
+        else:
+            excluded_columns = [self.destination.primary_key, "created_at", "updated_at"]
+            business_keys = [col for col in historical_df.columns if col not in excluded_columns]
+    
         destination_table = (
-            self.utilities.calculate_hash_based_on_columns(historical_df, self.destination.business_keys)
+            self.utilities.calculate_hash_based_on_columns(historical_df, business_keys)
         )
 
-        current_df = self.utilities.calculate_hash_based_on_columns(self.df, self.destination.business_keys)
+        current_df = self.utilities.calculate_hash_based_on_columns(self.df, business_keys)
 
-        df_to_insert = current_df.join(destination_table, on="hash_key", how="anti")
+        df_to_insert = (
+            current_df
+            .join(destination_table, on="hash_key", how="anti")
+        )
+
+        # Ajout des metadonnées
+        df_to_insert = df_to_insert.with_columns(
+            pl.lit(self.current_datetime).alias("created_at")
+        )
 
         if not df_to_insert.is_empty():
             # Insérer les nouvelles lignes

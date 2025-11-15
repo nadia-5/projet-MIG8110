@@ -7,10 +7,11 @@ commands = [
     <<-EOT
     CREATE TABLE seller (
         seller_id integer PRIMARY KEY,
-        location_id integer NOT NULL,
-        FOREIGN KEY (location_id) REFERENCES location(location_id)
+        seller_state char(2),
+        seller_city varchar(64),
+        seller_zip_code varchar(16),
+        created_at timestamp NOT NULL
     );
     EOT
   ]
-  depends_on = [ postgresql_script.location ]
 }
