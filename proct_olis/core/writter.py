@@ -50,7 +50,9 @@ class tableWritter(WritterBase):
         query = f"""SELECT * FROM {self.destination.schema}.{self.destination.table}"""
         historical_df = pl.read_database_uri(query=query, uri=self.pg_conn)
 
-        print(historical_df.head())
+        print("Historical DataFrame Preview:", historical_df.filter(pl.col("order_id") == "e481f51c-bdc5-4678-b7cc-49136f2d6af7").head())
+
+        print("Current DataFrame Preview:", self.df.filter(pl.col("order_id") == "e481f51c-bdc5-4678-b7cc-49136f2d6af7").head())
 
         if self.destination.business_keys:
             business_keys = self.destination.business_keys
@@ -62,12 +64,22 @@ class tableWritter(WritterBase):
             self.utilities.calculate_hash_based_on_columns(historical_df, business_keys)
         )
 
+        print("Destination Table with hash_key Preview:", destination_table.filter(pl.col("order_id") == "e481f51c-bdc5-4678-b7cc-49136f2d6af7").head())
+
         current_df = self.utilities.calculate_hash_based_on_columns(self.df, business_keys)
+
+        print("Current DataFrame with hash_key Preview:", current_df.filter(pl.col("order_id") == "e481f51c-bdc5-4678-b7cc-49136f2d6af7").head())
+
+
 
         df_to_insert = (
             current_df
             .join(destination_table, on="hash_key", how="anti")
         )
+
+        print("DataFrame to Insert Preview:", df_to_insert.filter(pl.col("order_id") == "e481f51c-bdc5-4678-b7cc-49136f2d6af7").head())
+
+        print(f"Number of new rows to insert: {df_to_insert.height}")
 
         # Ajout des metadonnées
         df_to_insert = df_to_insert.with_columns(

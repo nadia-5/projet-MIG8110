@@ -1,0 +1,17 @@
+sources:
+  datalake.sellers:
+    type: s3
+    bucket_name: raw-data
+    file_name: sellers
+    file_extension: parquet
+    columns:
+      seller_id: seller_id
+      seller_zip_code_prefix: seller_zip_code
+      seller_state: seller_state
+      seller_city: seller_city   
+destination:
+  table: seller
+  schema: public
+  primary_key: seller_id
+  kind: append
+  destination_type: postgres_operational
