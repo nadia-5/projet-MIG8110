@@ -7,7 +7,7 @@ class Destination:
     schema: str 
     database: str
     destination_type: str
-    primary_key: str | None
+    primary_key: list[str] | None
     business_keys: list[str] | None = None
     kind: str | None = None
     bucket_name: str | None = None
