@@ -10,7 +10,7 @@ commands = [
         seller_state char(2),
         seller_city varchar(64),
         seller_zip_code varchar(16),
-        created_at timestamp NOT NULL
+        inserted_at timestamp NOT NULL
     );
     EOT
   ]

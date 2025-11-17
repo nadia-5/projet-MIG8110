@@ -22,6 +22,12 @@ class Utilities:
         Returns:
             DataFrame avec une colonne 'pk'
         """
+        if primary_key not in df.columns:
+            raise ValueError(f"La colonne '{primary_key}' n'existe pas dans le DataFrame.")
+        
+        if not isinstance(primary_key, str):
+            raise TypeError("La clé primaire doit être une chaîne de caractères.")
+        
         if mode == "auto":
             # Auto-increment basé sur l'index
             df = df.with_row_index(name=primary_key, offset=1)  # offset=1 pour commencer à 1

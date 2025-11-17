@@ -39,7 +39,8 @@ lint = [
  
 dev = [
     "pytest",
-    "ipykernel"
+    "ipykernel",
+    "pyspark"
 ]
 
 [project.scripts]

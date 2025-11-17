@@ -6,13 +6,14 @@ commands = [
     ,
     <<-EOT
     create table order_item (
-    order_id varchar(255) not null,
+    order_id uuid not null,
     item_id integer not null,
-    product_id varchar(255) not null,
-    seller_id integer not null,
+    product_id uuid not null,
+    seller_id uuid not null,
     shipping_limit_date timestamp,
     price decimal(19,2) not null,
     freight_value decimal(19,2) not null,
+    inserted_at timestamp not null,
     foreign key (order_id) references orders(order_id),
     foreign key (product_id) references product(product_id),
     foreign key (seller_id) references seller(seller_id),

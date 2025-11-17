@@ -14,7 +14,7 @@ commands = [
     approved_date timestamp,
     delivered_carrier_date timestamp,
     delivered_customer_date timestamp,
-    created_at timestamp NOT NULL,
+    inserted_at timestamp NOT NULL,
     foreign key (customer_id) references customer(customer_id),
     foreign key (status_id) references order_status_type(order_status_type_id)
 );

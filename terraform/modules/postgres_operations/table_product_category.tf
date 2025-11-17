@@ -9,6 +9,7 @@ commands = [
     product_category_id serial primary key,
     product_category_name varchar(255) unique not null,
     product_category_description varchar(255),
+    inserted_at timestamp not null,
     constraint chk_product_category_name_lower check (product_category_name = lower(product_category_name))
     );
     EOT

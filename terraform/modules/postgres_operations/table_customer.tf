@@ -11,7 +11,7 @@ commands = [
         customer_state char(2),
         customer_city varchar(64),
         customer_zip_code varchar(16),
-        created_at timestamp NOT NULL
+        inserted_at timestamp NOT NULL
     );
     EOT
   ]

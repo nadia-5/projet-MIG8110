@@ -1,0 +1,20 @@
+sources:
+  datalake.order_reviews:
+    type: s3
+    bucket_name: raw-data
+    file_name: order_reviews
+    file_extension: parquet
+    columns:
+      review_id: review_id
+      order_id: order_id
+      review_score: score
+      review_comment_title: title
+      review_comment_message: message
+destination:
+  table: order_review
+  schema: public
+  primary_key: 
+    - review_id
+    - order_id
+  kind: append
+  destination_type: postgres_operational
