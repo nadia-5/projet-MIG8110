@@ -4,7 +4,7 @@ import unicodedata
 class Utilities:
 
     def calculate_hash_based_on_columns(self, df: pl.DataFrame, columns: list[str]) -> pl.DataFrame:
-        concat_columns = pl.concat_str([pl.col(col).cast(pl.Utf8) for col in columns], separator="|")
+        concat_columns = pl.concat_str([pl.col(col).cast(pl.Utf8) for col in sorted(columns)], separator="|")
         return df.with_columns(concat_columns.hash().alias("hash_key")) 
 
     import polars as pl

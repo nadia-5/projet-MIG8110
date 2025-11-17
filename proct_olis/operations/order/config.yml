@@ -1,0 +1,28 @@
+sources:
+  datalake.orders:
+    type: s3
+    bucket_name: raw-data
+    file_name: orders
+    file_extension: parquet
+    columns:
+      order_id: order_id
+      customer_id: customer_id
+      order_status: order_status
+      order_purchase_timestamp: purchase_date
+      order_estimated_delivery_date: estimated_delivery_date
+      order_approved_at: approved_date
+      order_delivered_carrier_date: delivered_carrier_date
+      order_delivered_customer_date: delivered_customer_date  
+  operational.order_status_type:
+    type: postgres_operational
+    table: order_status_type
+    schema: public
+    columns:
+      order_status_type_id: order_status_type_id
+      order_status_type_code: order_status_type_code
+destination:
+  table: orders
+  schema: public
+  primary_key: order_id
+  kind: append
+  destination_type: postgres_operational
