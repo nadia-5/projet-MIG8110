@@ -1,5 +1,5 @@
 sources:
-  datalake.product_category_name:
+  datalake.geolocation:
     type: s3
     bucket_name: sources
     file_name: geolocation_dataset
