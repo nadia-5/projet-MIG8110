@@ -1,0 +1,10 @@
+sources:
+  datalake.product_category_name:
+    type: s3
+    bucket_name: sources
+    file_name: geolocation_dataset
+    file_extension: csv
+destination:
+  destination_type: s3
+  bucket_name: raw-data
+  file_name: ref-geolocation.parquet
