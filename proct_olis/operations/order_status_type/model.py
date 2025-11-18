@@ -1,5 +1,4 @@
 from proct_olis.core import TransformationBase
-import polars as pl
 
 class Transformation(TransformationBase):
     process_name: str = "Order Status Type Transactional Database Process"

@@ -1,6 +1,4 @@
 from proct_olis.core import TransformationBase 
-import polars.functions as F 
-import polars as pl
 
 class Transformation(TransformationBase):
     process_name: str = "Order Items Datalake Process"
