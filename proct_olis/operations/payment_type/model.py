@@ -1,10 +1,14 @@
-from proct_olis.core import TransformationBase 
-
+from proct_olis.core import TransformationBase
+import polars as pl
 
 class Transformation(TransformationBase):
     process_name: str = "Payment Type Transactional Database Process"
 
     def transformation(self):
-        payment_type_df = self.entity_map.get("datalake.order_payments").unique()
+        # 1. Charger la colonne renommée depuis config.yml
+        df = self.entity_map.get("datalake.order_payments").select("payment_type_code").unique()
+        # 2. Générer la clé primaire auto
+        self.final_df = df.with_row_index(name=self.config.destination.primary_key, offset=1)
 
-        self.final_df = self.utilities.add_primary_key(payment_type_df, "auto", self.config.destination.primary_key, self.config.destination.business_keys)
+
+        

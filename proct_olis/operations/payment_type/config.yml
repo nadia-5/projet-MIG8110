@@ -1,11 +1,11 @@
 sources:
-  datalake.orders:
+  datalake.order_payments:
     type: s3
     bucket_name: raw-data
     file_name: order_payments
     file_extension: parquet
     columns:
-      payment_type: payment_type
+      payment_type: payment_type_code
 destination:
   table: payment_type
   schema: public
