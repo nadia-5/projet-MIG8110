@@ -1,10 +1,15 @@
-from proct_olis.core import TransformationBase 
-
+from proct_olis.core import TransformationBase
+import polars as pl
 
 class Transformation(TransformationBase):
     process_name: str = "Order Status Type Transactional Database Process"
 
     def transformation(self):
-        order_status_type_df = self.entity_map.get("datalake.orders").unique()
+        # 1. Charger la colonne renommée depuis config.yml
+        df = self.entity_map.get("datalake.orders").select("order_status_type_code").unique()
 
-        self.final_df = self.utilities.add_primary_key(order_status_type_df, "auto", self.config.destination.primary_key, self.config.destination.business_keys)
+        # 2. Générer la clé primaire auto
+        self.final_df = df.with_row_index(name=self.config.destination.primary_key, offset=1)
+
+
+        
