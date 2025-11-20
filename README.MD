@@ -21,8 +21,13 @@ L’objectif est de construire une architecture modulaire, automatisée et scala
 `git clone https://github.com/nadia-5/projet-MIG8110`
 
 `cd projet-MIG8110`
+`cd terraform`
+`terraform init
+`terraform plan
+`terraform apply
+`cd..` 
+### chargement des donnée dans minio et BD operationnelle
+`python local_run.iypnb`
+`psql -h postgres -U admin -d operations`
 
-`docker build .`
 
-
-### 
