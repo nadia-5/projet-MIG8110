@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    curl unzip bash git nano wget openjdk-17-jdk \
+    curl unzip bash git nano wget openjdk-17-jdk  python3.10-venv python3.10-distutils build-essential\
     && curl -fsSL https://releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip -o terraform.zip \
     && unzip terraform.zip -d /usr/local/bin \
     && rm terraform.zip \
