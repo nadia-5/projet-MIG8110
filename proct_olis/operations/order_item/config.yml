@@ -1,0 +1,38 @@
+sources:
+  datalake.order_items:
+    type: s3
+    bucket_name: raw-data
+    file_name: order_items
+    file_extension: parquet
+    columns:
+      order_id: order_id
+      order_item_id: item_id
+      product_id: product_id
+      seller_id: seller_id
+      shipping_limit_date: shipping_limit_date
+      price: price
+      freight_value: freight_value
+
+  operational.seller:
+    type: postgres_operational
+    table: seller
+    schema: public
+    columns:
+      seller_id: seller_id
+
+  operational.product:
+    type: postgres_operational
+    table: product
+    schema: public
+    columns:
+      product_id: product_id
+
+destination:
+  table: order_item
+  schema: public
+  primary_key:
+    - order_id
+    - item_id
+  kind: append
+  destination_type: postgres_operational
+

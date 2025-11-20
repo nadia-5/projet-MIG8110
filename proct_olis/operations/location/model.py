@@ -15,7 +15,7 @@ class Transformation(TransformationBase):
 
     def transformation(self):
         location_df = (
-            self.entity_map.get("datalake.ref_geolocation")
+            self.entity_map.get("datalake.geolocation")
             .select(
                 pl.col("zip_code_prefix"),
                 pl.col("city").str.to_lowercase().map_elements(self.utilities.remove_accents).alias("city"),

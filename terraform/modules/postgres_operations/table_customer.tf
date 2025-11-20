@@ -6,7 +6,7 @@ commands = [
     ,
     <<-EOT
     CREATE TABLE customer (
-        customer_id uuid PRIMARY KEY,
+        customer_id uuid primary key,
         customer_code varchar(32) NOT NULL,
         customer_state char(2),
         customer_city varchar(64),

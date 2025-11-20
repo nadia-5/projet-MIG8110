@@ -8,7 +8,6 @@ commands = [
     create table order_payment (
     order_id uuid not null ,
     payment_seq integer not null,
-    order_item_id uuid,
     payment_type_id integer,
     installments integer,
     value decimal(19,2) not null,

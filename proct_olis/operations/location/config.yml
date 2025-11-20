@@ -1,5 +1,5 @@
 sources:
-  datalake.ref_geolocation:
+  datalake.geolocation:
     type: s3
     bucket_name: raw-data
     file_name: ref-geolocation
