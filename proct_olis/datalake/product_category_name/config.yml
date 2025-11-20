@@ -1,0 +1,10 @@
+sources:
+  datalake.product_category_name:
+    type: s3
+    bucket_name: sources
+    file_name: product_category_name_translation
+    file_extension: csv
+destination:
+  destination_type: s3
+  bucket_name: raw-data
+  file_name: ref-product-category-name-translation.parquet

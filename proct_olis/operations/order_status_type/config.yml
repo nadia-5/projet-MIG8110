@@ -1,0 +1,16 @@
+sources:
+  datalake.orders:
+    type: s3
+    bucket_name: raw-data
+    file_name: orders
+    file_extension: parquet
+    columns:
+      order_status: order_status_type_code
+destination:
+  table: order_status_type
+  schema: public
+  primary_key: order_status_type_id
+  business_keys:
+    - order_status_type_code
+  kind: append
+  destination_type: postgres_operational

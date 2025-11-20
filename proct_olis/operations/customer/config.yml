@@ -1,0 +1,18 @@
+sources:
+  datalake.customers:
+    type: s3
+    bucket_name: raw-data
+    file_name: customers
+    file_extension: parquet
+    columns:
+      customer_id: customer_id
+      customer_unique_id: customer_code
+      customer_zip_code_prefix: customer_zip_code
+      customer_city: customer_city
+      customer_state: customer_state
+destination:
+  table: customer
+  schema: public
+  primary_key: customer_id
+  kind: append
+  destination_type: postgres_operational

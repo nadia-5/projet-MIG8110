@@ -1,0 +1,29 @@
+sources:
+  datalake.order_payments:
+    type: s3
+    bucket_name: raw-data
+    file_name: order_payments
+    file_extension: parquet
+    columns:
+      order_id: order_id
+      payment_sequential: payment_seq
+      payment_type: payment_type_code
+      payment_installments: installments
+      payment_value: value
+
+  operational.payment_type:
+    type: postgres_operational
+    table: payment_type
+    schema: public
+    columns:
+      payment_type_id: payment_type_id
+      payment_type_code: payment_type_code
+
+destination:
+  table: order_payment
+  schema: public
+  primary_key:
+    - order_id
+    - payment_seq
+  kind: append
+  destination_type: postgres_operational

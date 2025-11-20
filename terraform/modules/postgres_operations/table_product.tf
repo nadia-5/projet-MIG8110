@@ -6,7 +6,7 @@ commands = [
     ,
     <<-EOT
 create table product (
-    product_id varchar(255) primary key,
+    product_id uuid primary key,
     product_category_id integer,
     name_length integer,
     description_length integer,
@@ -15,6 +15,7 @@ create table product (
     length_cm integer,
     height_cm integer,
     width_cm integer,
+    inserted_at timestamp not null,
     constraint chk_product_name_length check (name_length is null or name_length >= 0),
     constraint chk_product_description_length check (description_length is null or description_length >= 0),
     constraint chk_product_photos_qty check (photos_qty is null or photos_qty >= 0),

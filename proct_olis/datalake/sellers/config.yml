@@ -1,0 +1,10 @@
+sources:
+  datalake.sellers:
+    type: s3
+    bucket_name: sources
+    file_name: sellers_dataset
+    file_extension: csv
+destination:
+  destination_type: s3
+  bucket_name: raw-data
+  file_name: sellers.parquet

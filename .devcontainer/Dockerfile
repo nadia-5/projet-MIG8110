@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    curl unzip bash git nano wget \
+    curl unzip bash git nano wget openjdk-17-jdk \
     && curl -fsSL https://releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip -o terraform.zip \
     && unzip terraform.zip -d /usr/local/bin \
     && rm terraform.zip \
@@ -12,6 +12,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf awscliv2.zip aws \
     && curl -O https://dl.min.io/client/mc/release/linux-amd64/mc \
     && chmod +x mc && mv mc /usr/local/bin/mc
+
+# Configurer JAVA_HOME
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+ENV PATH=$JAVA_HOME/bin:$PATH
 
 # Optional: add Python, pip, jq, etc.
 RUN apt-get install -y python3 python3-pip jq

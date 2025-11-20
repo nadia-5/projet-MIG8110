@@ -1,0 +1,10 @@
+sources:
+  datalake.products:
+    type: s3
+    bucket_name: sources
+    file_name: products_dataset
+    file_extension: csv
+destination:
+  destination_type: s3
+  bucket_name: raw-data
+  file_name: products.parquet

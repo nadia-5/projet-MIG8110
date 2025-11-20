@@ -1,0 +1,25 @@
+sources:
+  datalake.products:
+    type: s3
+    bucket_name: raw-data
+    file_name: products
+    file_extension: parquet
+    columns:
+      product_category_name: product_category_name
+    filter_statement: "product_category_name is not null"
+  datalake.product_category_name:
+    type: s3
+    bucket_name: raw-data
+    file_name: ref-product-category-name-translation
+    file_extension: parquet
+    columns:
+      product_category_name: product_category_name
+      product_category_name_english: product_category_name_english
+destination:
+  table: product_category
+  schema: public
+  primary_key: product_category_id
+  business_keys:
+    - product_category_name
+  kind: append
+  destination_type: postgres_operational
