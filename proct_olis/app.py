@@ -7,8 +7,10 @@ import click
 def load_transformation(module: str, transformation_name: str):
     click.echo(f"Running transformation '{transformation_name}' from module '{module}'")
     try:
-        module_path = getattr(importlib.import_module(f"proct_olis.{module}"), transformation_name)
-        transformation_class = getattr(module_path, "Transformation")
+        module = importlib.import_module(f"proct_olis.{module}.{transformation_name}.model")
+
+        print("######", module, "#####")
+        transformation_class = getattr(module, "Transformation")
         transformation_class().process()
     except ImportError:
         click.echo(f"Could not find and load transformation: {transformation_name} in module: {module}.")

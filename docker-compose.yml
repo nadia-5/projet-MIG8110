@@ -26,7 +26,7 @@ services:
       - minio_data:/data
 
   airflow:
-    image: apache/airflow:2.8.1
+    image: apache/airflow:2.9.1
     container_name: airflow
     command: >
       bash -c "
@@ -39,9 +39,13 @@ services:
       AIRFLOW__CORE__FERNET_KEY: ''
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    env_file:
+      - .env 
     volumes:
-      - airflow_data:/opt/airflow
-      - ./scripts:/opt/airflow/scripts
+      - ./airflow_config/dags:/opt/airflow/dags
+      - ./airflow_config/logs:/opt/airflow/logs
+      - ./airflow_config/scripts:/opt/airflow/scripts
+      - ./dist:/opt/airflow/lib
     ports:
       - "8081:8080"
 
@@ -56,5 +60,4 @@ services:
 volumes:
   pgdata:
   minio_data:
-  airflow_data:
   env_dev:
