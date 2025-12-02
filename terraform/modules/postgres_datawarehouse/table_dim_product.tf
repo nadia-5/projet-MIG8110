@@ -1,11 +1,11 @@
 resource "postgresql_script" "dim_product" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS dim_product cascade;
+    DROP TABLE IF EXISTS dw.dim_product cascade;
     EOT
     ,
     <<-EOT
-        CREATE TABLE dim_product (
+        CREATE TABLE dw.dim_product (
         product_id VARCHAR(50) PRIMARY KEY,  -- Correction : VARCHAR pour matcher Olist
         product_category VARCHAR(255),       -- Ajout d'une taille max conseillée
         name_length INTEGER,

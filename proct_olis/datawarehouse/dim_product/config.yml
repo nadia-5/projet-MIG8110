@@ -1,0 +1,32 @@
+sources:
+  operational.product:
+    type: postgres_operational
+    table: product
+    schema: public
+    columns:
+      product_id: product_id
+      product_category_id: product_category_id
+      name_length: name_length
+      description_length: description_length
+      photos_qty: photos_qty
+      weight_g: weight_g
+      length_cm: length_cm
+      height_cm: height_cm
+      width_cm: width_cm
+
+  operational.category:
+    type: postgres_operational
+    table: product_category
+    schema: public
+    columns:
+      product_category_id: product_category_id
+      product_category_name: product_category_name
+
+destination:
+  table: dim_product
+  schema: dw
+  primary_key: product_id
+  business_keys:
+    - product_id
+  kind: append # Mettez 'scd2' si votre writer le supporte
+  destination_type: postgres_datawarehouse

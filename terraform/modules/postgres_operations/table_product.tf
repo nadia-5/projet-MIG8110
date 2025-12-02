@@ -15,7 +15,8 @@ create table product (
     length_cm integer,
     height_cm integer,
     width_cm integer,
-    inserted_at timestamp not null,
+    inserted_at timestamp not null default CURRENT_TIMESTAMP,
+    updated_at timestamp,
     constraint chk_product_name_length check (name_length is null or name_length >= 0),
     constraint chk_product_description_length check (description_length is null or description_length >= 0),
     constraint chk_product_photos_qty check (photos_qty is null or photos_qty >= 0),
@@ -26,6 +27,14 @@ create table product (
     foreign key (product_category_id) references product_category(product_category_id)
 );
     EOT
+    ,    <<-EOT
+    -- Attachement du trigger
+    DROP TRiGGER IF EXISTS update_product_modtime ON product;
+    CREATE TRIGGER update_product_modtime
+    BEFORE UPDATE ON product
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+    EOT
   ]
-  depends_on = [ postgresql_script.product_category ]
+  depends_on = [ postgresql_script.product_category  , postgresql_script.trigger_function ]
 }

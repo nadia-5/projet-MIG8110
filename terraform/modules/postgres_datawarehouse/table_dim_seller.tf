@@ -1,12 +1,12 @@
 resource "postgresql_script" "dim_seller" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS dim_seller cascade;
+    DROP TABLE IF EXISTS dw.dim_seller cascade;
     EOT
     ,
     <<-EOT
-    CREATE TABLE dim_seller (
-        seller_id integer PRIMARY KEY,
+    CREATE TABLE dw.dim_seller (
+        seller_id VARCHAR(50) PRIMARY KEY,
         seller_state char(2),
         seller_city varchar(64),
         seller_zip_code varchar(16),

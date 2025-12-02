@@ -1,0 +1,19 @@
+sources:
+  operational.customer:
+    type: postgres_operational
+    table: customer
+    schema: public
+    columns:
+      customer_id: customer_id
+      customer_city: customer_city
+      customer_state: customer_state
+      customer_zip_code: customer_zip_code
+
+destination:
+  table: dim_customer
+  schema: dw
+  primary_key: customer_id
+  business_keys:
+    - customer_id
+  kind: append 
+  destination_type: postgres_datawarehouse

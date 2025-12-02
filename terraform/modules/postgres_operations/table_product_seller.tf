@@ -10,15 +10,21 @@ resource "postgresql_script" "product_seller" {
         seller_id UUID NOT NULL,
         price DECIMAL(19,2),
         inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        
-        -- La clé primaire est le couple (Produit + Vendeur)
+        updated_at TIMESTAMP,
+
         PRIMARY KEY (product_id, seller_id),
-        
-        -- Clés étrangères (Optionnel mais recommandé pour l'intégrité)
         FOREIGN KEY (product_id) REFERENCES product(product_id),
         FOREIGN KEY (seller_id) REFERENCES seller(seller_id)
     );
     EOT
+  ,    <<-EOT
+    -- Attachement du trigger
+    DROP TRiGGER IF EXISTS update_product_seller_modtime ON product_seller;
+    CREATE TRIGGER update_product_seller_modtime
+    BEFORE UPDATE ON product_seller
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+    EOT
   ]
-  depends_on = [ postgresql_script.product, postgresql_script.seller ]
+  depends_on = [ postgresql_script.product, postgresql_script.seller, postgresql_script.trigger_function ]
 }
