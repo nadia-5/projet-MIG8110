@@ -2,7 +2,7 @@ sources:
   datalake.products:
     type: s3
     bucket_name: sources
-    file_name: products_dataset
+    file_name: products
     file_extension: csv
 destination:
   destination_type: s3

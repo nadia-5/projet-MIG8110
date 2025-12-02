@@ -1,10 +1,12 @@
 sources:
-  datalake.order_items:
+  datalake.order_items: 
     type: s3
-    bucket_name: sources
-    file_name: order_items_dataset
-    file_extension: csv
+    bucket_name: sources  
+    file_name: items      
+    file_extension: csv   
+
 destination:
   destination_type: s3
-  bucket_name: raw-data
-  file_name: order_items.parquet
+  bucket_name: raw-data   
+  file_name: order_items.parquet        
+ 

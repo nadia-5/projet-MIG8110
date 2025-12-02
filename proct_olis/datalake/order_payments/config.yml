@@ -2,7 +2,7 @@ sources:
   datalake.order_payments:
     type: s3
     bucket_name: sources
-    file_name: order_payments_dataset
+    file_name: order_payments
     file_extension: csv
 destination:
   destination_type: s3

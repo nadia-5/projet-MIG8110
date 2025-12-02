@@ -1,17 +1,38 @@
+import argparse
 import importlib
-import click
+import sys
 
-@click.command()
-@click.option('--module',  type=click.Choice(['datalake', 'operations', 'datawarehouse']), required=True, help='Name of the process to run')
-@click.option('--transformation_name', type=str, required=True, help='Name of the process to run')
-def load_transformation(module: str, transformation_name: str):
-    click.echo(f"Running transformation '{transformation_name}' from module '{module}'")
-    try:
-        module_path = getattr(importlib.import_module(f"proct_olis.{module}"), transformation_name)
-        transformation_class = getattr(module_path, "Transformation")
-        transformation_class().process()
-    except ImportError:
-        click.echo(f"Could not find and load transformation: {transformation_name} in module: {module}.")
+# On n'a pas besoin d'importer Settings ici, TransformationBase s'en charge
 
 def main():
-    load_transformation(standalone_mode=False)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--date", type=str, required=False, help="Date de simulation (YYYY-MM-DD)")
+    parser.add_argument('--module', type=str, required=True, help="Ex: operations")
+    parser.add_argument('--transformation_name', type=str, required=True, help="Ex: product_seller")
+    
+    args = parser.parse_args()
+
+    print(f"🚀 Lancement : {args.module}/{args.transformation_name} pour la date {args.date}")
+
+    try:
+        # Chargement dynamique du module (ex: proct_olis.operations.product_seller.model)
+        module_path_str = f"proct_olis.{args.module}.{args.transformation_name}.model"
+        mod = importlib.import_module(module_path_str)
+        
+        # Récupération de la classe Transformation
+        TransformationClass = getattr(mod, "Transformation")
+        
+        # Instanciation AVEC la date
+        process_instance = TransformationClass(execution_date=args.date)
+        
+        # Lancement
+        process_instance.process()
+        
+    except Exception as e:
+        print(f"❌ Erreur critique : {e}")
+        # Affiche plus de détails si besoin pour le débogage
+        import traceback
+        traceback.print_exc()
+
+if __name__ == "__main__":
+    main()

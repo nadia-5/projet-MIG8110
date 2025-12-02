@@ -1,4 +1,4 @@
-from proct_olis.core import TransformationBase
+from proct_olis.core.transformation import TransformationBase 
 
 class Transformation(TransformationBase):
     process_name: str = "Order Status Type Transactional Database Process"

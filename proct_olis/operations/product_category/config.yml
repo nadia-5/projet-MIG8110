@@ -10,7 +10,7 @@ sources:
   datalake.product_category_name:
     type: s3
     bucket_name: raw-data
-    file_name: ref-product-category-name-translation
+    file_name: common/ref-product-category-name-translation
     file_extension: parquet
     columns:
       product_category_name: product_category_name

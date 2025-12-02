@@ -1,31 +1,19 @@
 sources:
   datalake.order_items:
     type: s3
-    bucket_name: raw-data
+    bucket_name: raw-data 
     file_name: order_items
-    file_extension: parquet
+    file_extension: parquet 
     columns:
       product_id: product_id
       seller_id: seller_id
       price: price
-    filter_statement: "product_id is not null AND seller_id is not null"
-  operational.seller:
-    type: postgres_operational
-    table: seller
-    schema: public
-    columns:
-      seller_id: seller_id
+    filter_statement: "product_id is not null"
 
-  operational.product:
-    type: postgres_operational
-    table: product
-    schema: public
-    columns:
-      product_id: product_id
 destination:
   table: product_seller
   schema: public
-  primary_key: product_id 
+  primary_key: product_id
   business_keys:
     - product_id
     - seller_id
