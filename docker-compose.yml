@@ -4,21 +4,33 @@ services:
     image: postgres:15
     container_name: postgres
     environment:
-      POSTGRES_DB: operation
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ${TF_VAR_POSTGRES_DATABASE}
+      POSTGRES_USER: ${TF_VAR_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${TF_VAR_POSTGRES_PASSWORD}
     ports:
       - "5430:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  postgres_dw:
+    image: postgres:15
+    container_name: postgres_dw
+    environment:
+      POSTGRES_DB: ${TF_VAR_POSTGRES_DW_DATABASE}
+      POSTGRES_USER: ${TF_VAR_POSTGRES_DW_USER}
+      POSTGRES_PASSWORD: ${TF_VAR_POSTGRES_DW_PASSWORD}
+    ports:
+      - "5431:5432"
+    volumes:
+      - pgdata_dw:/var/lib/postgresql/data
 
   minio:
     image: minio/minio:latest
     container_name: minio
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
+      MINIO_ROOT_USER: ${TF_VAR_MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${TF_VAR_MINIO_SECRET_KEY}
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -41,22 +53,20 @@ services:
     env_file:
       - .env 
     volumes:
-      - ./airflow_config/dags:/opt/airflow/dags
-      - ./airflow_config/logs:/opt/airflow/logs
-      - ./airflow_config/scripts:/opt/airflow/scripts
-      - ./dist:/opt/airflow/lib
+      - ${HOST_PROJECT_ROOT}/airflow_config/dags:/opt/airflow/dags
+      - ${HOST_PROJECT_ROOT}/airflow_config/logs:/opt/airflow/logs
+      - ${HOST_PROJECT_ROOT}/airflow_config/scripts:/opt/airflow/scripts
+      - ${HOST_PROJECT_ROOT}/dist:/opt/airflow/lib
     ports:
       - "8081:8080"
 
-  dev:
-    build:
-      context: ./.devcontainer
-      dockerfile: Dockerfile
-    volumes:
-      - env_dev:/workspace
-    tty: true
-
 volumes:
   pgdata:
+  pgdata_dw:
   minio_data:
-  env_dev:
+
+networks:
+  default:
+    # Remplace par le nom EXACT trouvé à l'étape 1
+    name: projet-mig8110_devcontainer_default
+    external: true

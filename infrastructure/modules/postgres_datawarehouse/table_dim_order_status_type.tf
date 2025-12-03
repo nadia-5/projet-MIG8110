@@ -1,11 +1,11 @@
 resource "postgresql_script" "dim_order_status_type" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS dw.dim_order_status_type cascade;
+    DROP TABLE IF EXISTS dim_order_status_type cascade;
     EOT
     ,
     <<-EOT
-    CREATE TABLE dw.dim_order_status_type (
+    CREATE TABLE dim_order_status_type (
     order_status_type_id integer primary key,
     order_status_type_code varchar(255) unique not null,
     order_status_type_description varchar(255),
@@ -16,6 +16,4 @@ commands = [
     );
     EOT
   ]
-
-  depends_on = [ postgresql_schema.dw ]
 }

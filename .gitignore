@@ -16,3 +16,4 @@ airflow_config/webserver_config.py
 airflow_config/airflow-webserver.pid
 dist
 .pdm-build
+tfplan

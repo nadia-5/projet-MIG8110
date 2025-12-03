@@ -1,11 +1,11 @@
 resource "postgresql_script" "dim_date" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS dw.dim_date cascade;
+    DROP TABLE IF EXISTS dim_date cascade;
     EOT
     ,
     <<-EOT
-    CREATE TABLE dw.dim_date (
+    CREATE TABLE dim_date (
         date_id uuid PRIMARY KEY,
         date_value date NOT NULL,
         year integer NOT NULL,
@@ -19,6 +19,4 @@ commands = [
     );
     EOT
   ]
-
-  depends_on = [ postgresql_schema.dw ]
 }

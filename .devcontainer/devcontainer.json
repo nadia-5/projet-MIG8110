@@ -1,16 +1,42 @@
 {
   "name": "projet-mig8110",
-  "dockerComposeFile": "../docker-compose.yml",
+  "dockerComposeFile": "docker-compose.yml",
   "service": "dev",
   "workspaceFolder": "/workspace",
+
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
   },
+
   "extensions": [
     "hashicorp.terraform",
     "ms-python.python"
   ],
+
   "mounts": [
-    "source=${localWorkspaceFolder},target=/workspace,type=bind"
-  ]
+    "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "version": "latest",
+      "enableNonRootDocker": "true",
+      "moby": "true",
+      "dockerDashComposeVersion": "v2"
+    },
+    // Si tu veux aussi Terraform dedans :
+    "ghcr.io/devcontainers/features/terraform:1": {}
+
+  },
+
+  "runArgs": [
+    "--network=data_stack_network" 
+  ],
+
+  "remoteEnv": {
+    // VS Code va remplacer ceci par le vrai chemin (ex: C:\Users\Toi\Projet)
+    // avant de lancer le conteneur.
+    "HOST_PROJECT_ROOT": "${localWorkspaceFolder}"
+  }
 }

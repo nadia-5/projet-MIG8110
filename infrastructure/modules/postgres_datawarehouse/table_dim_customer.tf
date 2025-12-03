@@ -1,11 +1,11 @@
 resource "postgresql_script" "dim_customer" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS dw.dim_customer cascade;
+    DROP TABLE IF EXISTS dim_customer cascade;
     EOT
     ,
     <<-EOT
-    CREATE TABLE dw.dim_customer (
+    CREATE TABLE dim_customer (
         customer_id VARCHAR(50) PRIMARY KEY,
         customer_code varchar(32) NOT NULL,
         customer_state char(2),
@@ -18,6 +18,4 @@ commands = [
     );
     EOT
   ]
-
-  depends_on = [ postgresql_schema.dw ]
 }

@@ -51,6 +51,24 @@ dev = [
 [project.scripts]
 transformation = "proct_olis.app:main"
 
+[tool.pdm.scripts]
+_.env_file = ".env"
+infra-up = {shell = "docker compose up -d"}
+infra-down = {shell = "docker compose down -v"}
+init = {shell = "terraform -chdir=infrastructure init"}
+plan = {shell = "terraform -chdir=infrastructure plan -out=tfplan"}
+apply = {shell = "terraform -chdir=infrastructure apply tfplan"}
+destroy = {shell = "terraform -chdir=infrastructure destroy -auto-approve"}
+clean-dist = { shell = "rm -rf dist" }
+build-lib = "pdm build"
+restart-container = "docker restart airflow"
+install-whl = "docker exec airflow bash -c 'pip install --force-reinstall /opt/airflow/lib/proct_olis-1.0-py3-none-any.whl'"
+deploy-lib = { composite = ["clean-dist", "build-lib", "restart-container", "install-whl"]}
+
+seed = { call = "scripts.init_datalke:main"}
+
+install_infra = { composite = ["apply", "seed"]}
+
 [tool.pdm.build]
 includes = []
 excludes = ["scripts/"]

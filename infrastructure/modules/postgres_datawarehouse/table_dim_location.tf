@@ -1,11 +1,11 @@
 resource "postgresql_script" "dim_location" {
 commands = [
     <<-EOT
-    DROP TABLE IF EXISTS dw.dim_location cascade;
+    DROP TABLE IF EXISTS dim_location cascade;
     EOT
     ,
     <<-EOT
-    CREATE TABLE dw.dim_location (
+    CREATE TABLE dim_location (
         location_id integer PRIMARY KEY,
         zip_code_prefix VARCHAR(20) NOT NULL,
         city VARCHAR(50) NOT NULL,
@@ -19,6 +19,4 @@ commands = [
     );
     EOT
   ]
-
-  depends_on = [ postgresql_schema.dw ]
 }

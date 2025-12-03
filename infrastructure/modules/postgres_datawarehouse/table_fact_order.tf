@@ -2,11 +2,11 @@ resource "postgresql_script" "fact_orders" {
 
   commands = [
     <<-EOT
-    DROP TABLE IF EXISTS dw.fact_orders CASCADE;
+    DROP TABLE IF EXISTS fact_orders CASCADE;
     EOT
     ,
     <<-EOT
-    CREATE TABLE dw.fact_orders (
+    CREATE TABLE fact_orders (
         fact_order_id SERIAL PRIMARY KEY,
         order_id VARCHAR(50) NOT NULL,
         customer_id VARCHAR(50) NOT NULL,    
@@ -24,9 +24,9 @@ resource "postgresql_script" "fact_orders" {
         delivered_customer_date TIMESTAMP,
         estimated_delivery_date TIMESTAMP,
         inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        CONSTRAINT fk_fact_product FOREIGN KEY (product_id) REFERENCES dw.dim_product(product_id),
-        CONSTRAINT fk_fact_seller FOREIGN KEY (seller_id) REFERENCES dw.dim_seller(seller_id),
-        CONSTRAINT fk_fact_status FOREIGN KEY (order_status_id) REFERENCES dw.dim_order_status_type(order_status_type_id)
+        CONSTRAINT fk_fact_product FOREIGN KEY (product_id) REFERENCES dim_product(product_id),
+        CONSTRAINT fk_fact_seller FOREIGN KEY (seller_id) REFERENCES dim_seller(seller_id),
+        CONSTRAINT fk_fact_status FOREIGN KEY (order_status_id) REFERENCES dim_order_status_type(order_status_type_id)
     );
     EOT
   ]
