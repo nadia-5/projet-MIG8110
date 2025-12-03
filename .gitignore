@@ -14,9 +14,5 @@ airflow_config/airflow.cfg
 airflow_config/airflow.db
 airflow_config/webserver_config.py
 airflow_config/airflow-webserver.pid
-.terraform
-terraform.tfstate
-.terraform.lock.hcl
 dist
 .pdm-build
-.pdm.lock
