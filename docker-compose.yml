@@ -30,7 +30,6 @@ services:
     container_name: airflow
     command: >
       bash -c "
-        chmod +x /opt/airflow/scripts/entrypoint.sh &&
         /opt/airflow/scripts/entrypoint.sh
       "
     environment:
