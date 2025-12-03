@@ -1,0 +1,19 @@
+sources:
+  operational.seller:
+    type: postgres_operational
+    table: seller
+    schema: public
+    columns:
+      seller_id: seller_id
+      seller_city: seller_city
+      seller_state: seller_state
+      seller_zip_code: seller_zip_code
+
+destination:
+  table: dim_seller
+  schema: dw
+  primary_key: seller_id
+  business_keys:
+    - seller_id
+  kind: append
+  destination_type: postgres_datawarehouse

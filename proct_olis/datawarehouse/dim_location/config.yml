@@ -1,0 +1,21 @@
+sources:
+  operational.location:
+    type: postgres_operational
+    table: location
+    schema: public
+    columns:
+      location_id: location_id
+      zip_code_prefix: zip_code_prefix
+      city: city
+      state: state
+
+destination:
+  table: dim_location
+  schema: dw
+  primary_key: location_id
+  business_keys:
+    - zip_code_prefix
+    - city
+    - state
+  kind: append
+  destination_type: postgres_datawarehouse
