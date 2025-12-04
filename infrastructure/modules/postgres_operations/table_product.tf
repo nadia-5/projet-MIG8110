@@ -26,6 +26,10 @@ create table product (
     foreign key (product_category_id) references product_category(product_category_id)
 );
     EOT
+    ,
+        <<-EOT
+    SELECT audit.audit_table('public.product');
+    EOT
   ]
-  depends_on = [ postgresql_script.product_category ]
+  depends_on = [ postgresql_script.product_category, postgresql_function.audit_table ]
 }

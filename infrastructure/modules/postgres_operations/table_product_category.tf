@@ -14,5 +14,10 @@ commands = [
     constraint chk_product_category_name_lower check (product_category_name = lower(product_category_name))
     );
     EOT
+    ,
+        <<-EOT
+    SELECT audit.audit_table('public.product_category');
+    EOT
   ]
+    depends_on = [ postgresql_function.audit_table ]
 }

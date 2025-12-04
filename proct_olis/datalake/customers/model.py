@@ -4,9 +4,14 @@ import polars as pl
 
 class Transformation(TransformationBase):
     process_name: str = "Customer Datalake Process"
-
+    
     def transformation(self):
+        orders_df = self.entity_map.get("datalake.orders")
         customers_df = self.entity_map.get("datalake.customers")
 
+        customers_with_orders = customers_df.filter(
+            customers_df["customer_id"].is_in(orders_df["customer_id"].unique())
+        )
+
         # Exemple de transformation : sélection de colonnes spécifiques et renommage
-        self.final_df = customers_df
+        self.final_df = customers_with_orders

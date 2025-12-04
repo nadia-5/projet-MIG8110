@@ -14,5 +14,11 @@ commands = [
         inserted_at timestamp NOT NULL
     );
     EOT
+    ,
+    <<-EOT
+    SELECT audit.audit_table('public.customer');
+    EOT
   ]
+
+    depends_on = [ postgresql_function.audit_table ]
 }

@@ -18,6 +18,10 @@ create table order_review (
     constraint primary_key PRIMARY KEY (review_id, order_id)
 );
     EOT
+    ,
+        <<-EOT
+    SELECT audit.audit_table('public.order_review');
+    EOT
   ]
-    depends_on = [ postgresql_script.order, postgresql_script.review ]
+    depends_on = [ postgresql_script.order, postgresql_script.review, postgresql_function.audit_table ]
 }

@@ -13,6 +13,11 @@ commands = [
     constraint chk_payment_type_code_lower check (payment_type_code = lower(payment_type_code))
     );
     EOT
+    ,
+    <<-EOT
+    SELECT audit.audit_table('public.payment_type');
+    EOT
   ]
-  depends_on = [ postgresql_script.order_status_type ]
+  
+  depends_on = [ postgresql_function.audit_table ]
 }

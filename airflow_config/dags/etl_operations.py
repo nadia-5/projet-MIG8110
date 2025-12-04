@@ -9,6 +9,7 @@ with DAG(
     start_date=datetime(2025, 11, 24),
     schedule_interval="@daily",
     catchup=False,
+    is_paused_upon_creation=False
 ) as dag:
 
     customer_etl = BashOperator(

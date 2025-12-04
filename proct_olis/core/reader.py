@@ -28,6 +28,8 @@ class S3Reader(BaseReader):
             file_extension = source.file_extension
             path_read = f"s3://{bucket_name}/{file_name}.{file_extension}"
 
+            print(path_read)
+
             if file_extension == "csv":
                 with self.fs.open(path_read, "rb") as f:
                     df = pl.read_csv(f)

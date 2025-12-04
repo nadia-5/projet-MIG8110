@@ -18,8 +18,11 @@ commands = [
     constraint chk_installments_nonneg check (installments is null or installments >= 0),
     constraint chk_payment_value_nonneg check (value >= 0)
 );
-
+    EOT
+    ,
+        <<-EOT
+    SELECT audit.audit_table('public.order_payment');
     EOT
   ]
-    depends_on = [ postgresql_script.order, postgresql_script.payment_type ]
+    depends_on = [ postgresql_script.order, postgresql_script.payment_type, postgresql_function.audit_table ]
 }

@@ -13,5 +13,10 @@ commands = [
     constraint chk_order_status_type_code_lower check (order_status_type_code = lower(order_status_type_code))
     );
     EOT
+    ,
+        <<-EOT
+    SELECT audit.audit_table('public.order_status_type');
+    EOT
   ]
+    depends_on = [ postgresql_function.audit_table ]
 }

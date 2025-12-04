@@ -16,5 +16,11 @@ commands = [
         constraint uq_location_zip_code_prefix_city_state unique (zip_code_prefix, city, state)
     );
     EOT
+    ,
+    <<-EOT
+    SELECT audit.audit_table('public.location');
+    EOT
   ]
+
+  depends_on = [ postgresql_function.audit_table ]
 }
