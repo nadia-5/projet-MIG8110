@@ -12,6 +12,10 @@ create table review (
     inserted_at timestamp not null
 );
     EOT
+    ,
+        <<-EOT
+    SELECT audit.audit_table('public.review');
+    EOT
   ]
-    depends_on = [ postgresql_script.customer ]
+    depends_on = [ postgresql_script.customer, postgresql_function.audit_table ]
 }

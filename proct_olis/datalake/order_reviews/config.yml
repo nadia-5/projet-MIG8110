@@ -1,4 +1,10 @@
 sources:
+  datalake.orders:
+    type: s3
+    bucket_name: sources
+    file_name: orders_dataset
+    file_extension: csv
+    filter_statement: "order_purchase_timestamp between '${execution_date} 00:00:00' and  '${execution_date} 23:59:59')"
   datalake.order_reviews:
     type: s3
     bucket_name: sources
@@ -7,4 +13,5 @@ sources:
 destination:
   destination_type: s3
   bucket_name: raw-data
+  date_bucket: ${execution_date}
   file_name: order_reviews.parquet

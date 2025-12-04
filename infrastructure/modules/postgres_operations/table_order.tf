@@ -19,6 +19,10 @@ commands = [
     foreign key (status_id) references order_status_type(order_status_type_id)
 );
     EOT
+    ,
+        <<-EOT
+    SELECT audit.audit_table('public.orders');
+    EOT
   ]
-  depends_on = [ postgresql_script.customer, postgresql_script.order_status_type ]
+  depends_on = [ postgresql_script.customer, postgresql_script.order_status_type, postgresql_function.audit_table ]
 }

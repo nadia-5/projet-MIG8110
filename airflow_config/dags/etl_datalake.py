@@ -5,53 +5,57 @@ from datetime import datetime
 with DAG(
     dag_id="olis_etl_datalake",
     start_date=datetime(2025, 11, 18),
-    schedule_interval="@daily",
+    schedule_interval=None,
     catchup=False,
+    is_paused_upon_creation=False,
+    tags=["olist", "simulation"]
 ) as dag:
+    
+    base_cmd = "transformation --module datalake --extract_date {{ dag_run.conf['simulation_date'] if dag_run and dag_run.conf and 'simulation_date' in dag_run.conf else ds }}"
 
     customer_etl = BashOperator(
         task_id="datalake_customer",
-        bash_command="transformation --module datalake --transformation_name customers"
+        bash_command=f"{base_cmd} --transformation_name customers"
     )
 
     geolocation_etl = BashOperator(
         task_id="datalake_geolocation",
-        bash_command="transformation --module datalake --transformation_name geolocation"
+        bash_command=f"{base_cmd} --transformation_name geolocation"
     )
 
     order_items_etl = BashOperator(
         task_id="datalake_order_items",
-        bash_command="transformation --module datalake --transformation_name order_items"
+        bash_command=f"{base_cmd} --transformation_name order_items"
     )
 
     order_payments_etl = BashOperator(
         task_id="datalake_order_payments",
-        bash_command="transformation --module datalake --transformation_name order_payments"
+        bash_command=f"{base_cmd} --transformation_name order_payments"
     )
 
     order_reviews_etl = BashOperator(
         task_id="datalake_order_reviews",
-        bash_command="transformation --module datalake --transformation_name order_reviews"
+        bash_command=f"{base_cmd} --transformation_name order_reviews"
     )
 
     order_orders_etl = BashOperator(
         task_id="datalake_orders",
-        bash_command="transformation --module datalake --transformation_name orders"
+        bash_command=f"{base_cmd} --transformation_name orders"
     )
 
     order_product_category_name_etl = BashOperator(
         task_id="datalake_product_category_name",
-        bash_command="transformation --module datalake --transformation_name product_category_name"
+        bash_command=f"{base_cmd} --transformation_name product_category_name"
     )
 
     order_products_etl = BashOperator(
         task_id="datalake_products",
-        bash_command="transformation --module datalake --transformation_name products"
+        bash_command=f"{base_cmd} --transformation_name products"
     )
 
     order_sellers_etl = BashOperator(
         task_id="datalake_sellers_items",
-        bash_command="transformation --module datalake --transformation_name sellers"
+        bash_command=f"{base_cmd} --transformation_name sellers"
     )
 
     [customer_etl, geolocation_etl, order_items_etl, order_payments_etl, order_reviews_etl,

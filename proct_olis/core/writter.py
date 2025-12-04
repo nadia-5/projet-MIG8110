@@ -27,19 +27,21 @@ class S3Writter(WritterBase):
         self.fs = Session(settings, self.destination.destination_type).s3
 
     def write(self) -> None:
-        if not self.destination.date_bucket:
-            path_save = f"s3://{self.destination.bucket_name}/{self.destination.file_name}"
-        else:
-            date = pl.Date.strptime(self.destination.date_bucket, fmt="%Y-%m-%d").to_python_date()
-            annee = str(date.year).zfill(4)
-            mois = str(date.month).zfill(2)
-            jour = str(date.day).zfill(2)
+        if not self.df.is_empty():
+            print("yes")
+            if not self.destination.date_bucket:
+                path_save = f"s3://{self.destination.bucket_name}/{self.destination.file_name}"
+            else:
+                date = datetime.strptime(self.destination.date_bucket, "%Y-%m-%d")
+                annee = str(date.year).zfill(4)
+                mois = str(date.month).zfill(2)
+                jour = str(date.day).zfill(2)
 
-            path_save = f"s3://{self.destination.bucket_name}/{annee}/{mois}/{jour}/{self.destination.file_name}"
+                path_save = f"s3://{self.destination.bucket_name}/{annee}{mois}{jour}/{self.destination.file_name}"
 
-        # Écriture directe dans MinIO
-        with self.fs.open(path_save, "wb") as f:
-            self.df.write_parquet(f)
+            # Écriture directe dans MinIO
+            with self.fs.open(path_save, "wb") as f:
+                self.df.write_parquet(f)
 
 class tableWritter(WritterBase):
     def __init__(self, process_name: str, config: Config, settings: Settings, df: pl.DataFrame):

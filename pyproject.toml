@@ -67,6 +67,8 @@ build-lib = "pdm build"
 restart-container = "docker restart airflow"
 install-whl = "docker exec --user airflow airflow bash -c 'pip install /opt/airflow/lib/proct_olis-1.0-py3-none-any.whl'"
 
+load-lake = "docker exec --user airflow airflow bash -c 'python /opt/airflow/scripts/run_simulation.py'"
+
 deploy-tf = { composite = ["init-tf", "plan-tf", "apply-tf"]}
 deploy-lib = { composite = ["clean-dist", "build-lib", "restart-container", "install-whl"]}
 
