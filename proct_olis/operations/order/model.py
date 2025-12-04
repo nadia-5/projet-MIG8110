@@ -1,4 +1,4 @@
-from proct_olis.core.transformation import TransformationBase 
+from proct_olis.core.transformation import TransformationBase
 import polars as pl
 
 
@@ -6,43 +6,57 @@ class Transformation(TransformationBase):
     process_name: str = "Order Transactional Database Process"
 
     def transformation(self):
-        order_status_type_df = self.entity_map.get("operational.order_status_type")
-        order_df = self.entity_map.get("datalake.orders")
+        orders_df = self.entity_map.get("datalake.orders")
+
+        if orders_df is None or orders_df.is_empty():
+            self.final_df = pl.DataFrame()
+            return
+
+        # Map textual status → numeric status_id
+        status_mapping = {
+            "created": 1,
+            "approved": 2,
+            "invoiced": 3,
+            "processing": 4,
+            "shipped": 5,
+            "delivered": 6,
+            "unavailable": 7,
+            "canceled": 8,
+        }
+
+        df = orders_df.with_columns(
+            [
+                pl.col("order_status")
+                .replace(status_mapping)
+                .fill_null(1)
+                .alias("status_id"),
+                pl.col("order_purchase_timestamp").alias("purchase_date"),
+                pl.col("order_approved_at").alias("approved_date"),
+                pl.col("order_estimated_delivery_date").alias(
+                    "estimated_delivery_date"
+                ),
+                pl.col("order_delivered_carrier_date").alias(
+                    "delivered_carrier_date"
+                ),
+                pl.col("order_delivered_customer_date").alias(
+                    "delivered_customer_date"
+                ),
+            ]
+        )
 
         self.final_df = (
-            order_df
-            .join(
-                order_status_type_df,
-                left_on=pl.col("order_status").cast(pl.Utf8),
-                right_on=pl.col("order_status_type_code").cast(pl.Utf8),
-                how="left",
+            df.select(
+                [
+                    pl.col("order_id"),
+                    pl.col("customer_id"),
+                    pl.col("status_id"),
+                    pl.col("purchase_date"),
+                    pl.col("approved_date"),
+                    pl.col("estimated_delivery_date"),
+                    pl.col("delivered_carrier_date"),
+                    pl.col("delivered_customer_date"),
+                    pl.lit(self.execution_date).alias("inserted_at"),
+                ]
             )
-            .select(
-                pl.col("order_id"),
-                pl.col("customer_id"),
-                pl.col("order_status_type_id").alias("status_id"),
-                pl.col("purchase_date").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S", strict=False),
-                pl.col("estimated_delivery_date").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S", strict=False),
-                pl.col("approved_date").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S", strict=False),
-                pl.col("delivered_carrier_date").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S", strict=False),
-                pl.col("delivered_customer_date").str.strptime(pl.Datetime, "%Y-%m-%d %H:%M:%S", strict=False)
-            )
-            .with_columns(
-                (
-                    pl.col("order_id").str.slice(0, 8) + "-" +
-                    pl.col("order_id").str.slice(8, 4) + "-" +
-                    pl.col("order_id").str.slice(12, 4) + "-" +
-                    pl.col("order_id").str.slice(16, 4) + "-" +
-                    pl.col("order_id").str.slice(20, 12)
-                ).alias("order_id")
-            )
-            .with_columns(
-                (
-                    pl.col("customer_id").str.slice(0, 8) + "-" +
-                    pl.col("customer_id").str.slice(8, 4) + "-" +
-                    pl.col("customer_id").str.slice(12, 4) + "-" +
-                    pl.col("customer_id").str.slice(16, 4) + "-" +
-                    pl.col("customer_id").str.slice(20, 12)
-                ).alias("customer_id")
-            )
+            .filter(pl.col("order_id").is_not_null())
         )

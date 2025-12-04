@@ -1,4 +1,5 @@
 sources:
+
   datalake.products:
     type: s3
     bucket_name: raw-data
@@ -6,7 +7,7 @@ sources:
     file_extension: parquet
     columns:
       product_id: product_id
-      product_category_name: product_category_name 
+      product_category_name: product_category_name
       product_name_lenght: name_length
       product_description_lenght: description_length
       product_photos_qty: photos_qty
@@ -14,6 +15,7 @@ sources:
       product_length_cm: length_cm
       product_height_cm: height_cm
       product_width_cm: width_cm
+
   operational.product_category:
     type: postgres_operational
     table: product_category
@@ -21,6 +23,7 @@ sources:
     columns:
       product_category_id: product_category_id
       product_category_name: product_category_name
+
 destination:
   table: product
   schema: public

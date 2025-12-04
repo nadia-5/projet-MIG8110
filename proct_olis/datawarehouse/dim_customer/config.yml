@@ -5,6 +5,7 @@ sources:
     schema: public
     columns:
       customer_id: customer_id
+      customer_code: customer_code
       customer_city: customer_city
       customer_state: customer_state
       customer_zip_code: customer_zip_code
@@ -15,5 +16,5 @@ destination:
   primary_key: customer_id
   business_keys:
     - customer_id
-  kind: append 
+  kind: scd2  
   destination_type: postgres_datawarehouse

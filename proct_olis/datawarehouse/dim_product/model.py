@@ -8,6 +8,7 @@ class Transformation(TransformationBase):
     def transformation(self):
         prod = self.entity_map.get("operational.product")
         cat = self.entity_map.get("operational.category")
+        valid_from = self.execution_date if self.execution_date else datetime.now().strftime("%Y-%m-%d")
 
         # Jointure pour récupérer le nom de la catégorie
         df = prod.join(cat, on="product_category_id", how="left")
@@ -24,7 +25,7 @@ class Transformation(TransformationBase):
             pl.col("width_cm"),
             
             # Champs SCD (Type 2)
-            pl.lit(datetime.now()).alias("valid_from"),
+            pl.lit(valid_from).str.to_datetime("%Y-%m-%d").alias("valid_from"),
             pl.lit(None, dtype=pl.Datetime).alias("valid_to"),
             pl.lit(True).alias("is_current"),
             pl.lit("hash").alias("rowhash")

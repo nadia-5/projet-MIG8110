@@ -28,5 +28,5 @@ destination:
   primary_key: product_id
   business_keys:
     - product_id
-  kind: append # Mettez 'scd2' si votre writer le supporte
+  kind: scd2  
   destination_type: postgres_datawarehouse

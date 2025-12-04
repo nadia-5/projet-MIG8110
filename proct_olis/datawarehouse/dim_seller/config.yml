@@ -1,4 +1,5 @@
 sources:
+
   operational.seller:
     type: postgres_operational
     table: seller
@@ -15,5 +16,5 @@ destination:
   primary_key: seller_id
   business_keys:
     - seller_id
-  kind: append
+  kind: scd2
   destination_type: postgres_datawarehouse

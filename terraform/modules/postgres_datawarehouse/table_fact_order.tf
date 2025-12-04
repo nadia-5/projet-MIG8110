@@ -35,6 +35,8 @@ resource "postgresql_script" "fact_orders" {
     postgresql_script.dim_product,
     postgresql_script.dim_seller,
     postgresql_script.dim_order_status_type,
-    postgresql_script.dim_customer
+    postgresql_script.dim_customer, 
+    
+    postgresql_schema.dw
   ]
 }

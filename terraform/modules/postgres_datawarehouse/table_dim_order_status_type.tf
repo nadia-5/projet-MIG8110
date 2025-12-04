@@ -16,4 +16,7 @@ commands = [
     );
     EOT
   ]
+  depends_on = [
+    postgresql_schema.dw
+  ]
 }
