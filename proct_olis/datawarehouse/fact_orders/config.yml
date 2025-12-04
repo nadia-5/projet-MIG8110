@@ -1,0 +1,20 @@
+sources:
+  operational.orders:
+    type: postgres_operational
+    table: orders
+    schema: public
+  
+  operational.items:
+    type: postgres_operational
+    table: order_item
+    schema: public
+
+destination:
+  table: fact_orders
+  schema: dw
+  primary_key: fact_order_id
+  business_keys:
+    - order_id
+    - order_item_id
+  kind: append
+  destination_type: postgres_datawarehouse

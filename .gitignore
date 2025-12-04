@@ -14,3 +14,6 @@ airflow_config/airflow.cfg
 airflow_config/airflow.db
 airflow_config/webserver_config.py
 airflow_config/airflow-webserver.pid
+dist
+.pdm-build
+tfplan
