@@ -28,7 +28,6 @@ class S3Writter(WritterBase):
 
     def write(self) -> None:
         if not self.df.is_empty():
-            print("yes")
             if not self.destination.date_bucket:
                 path_save = f"s3://{self.destination.bucket_name}/{self.destination.file_name}"
             else:

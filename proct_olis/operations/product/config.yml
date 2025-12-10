@@ -4,6 +4,7 @@ sources:
     bucket_name: raw-data
     file_name: products
     file_extension: parquet
+    partition: ${execution_date}
     columns:
       product_id: product_id
       product_category_name: product_category_name 

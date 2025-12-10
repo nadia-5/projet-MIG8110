@@ -9,10 +9,10 @@ SIMULATION_CURRENT_DATE = datetime(2017, 1, 5)
 
 # 2. Temps Réel (Intervalle d'attente entre deux lancements)
 # 15 minutes * 60 secondes
-REAL_TIME_INTERVAL_SECONDS = 1 * 60 
+REAL_TIME_INTERVAL_SECONDS = 2 * 60 
 
 # ID de ton DAG
-DAG_ID = "olis_etl_datalake"
+DAG_ID = "olis_etl_operationnel"
 
 def trigger_airflow(sim_date):
     """Déclenche le DAG avec la date simulée en paramètre"""

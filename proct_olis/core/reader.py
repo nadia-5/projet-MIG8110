@@ -6,6 +6,7 @@ from proct_olis.settings import Settings
 from proct_olis.core.session import Session
 import polars as pl
 from typing import Dict
+from datetime import datetime
 
 
 class BaseReader(ABC):
@@ -26,9 +27,16 @@ class S3Reader(BaseReader):
             bucket_name = source.bucket_name
             file_name = source.file_name
             file_extension = source.file_extension
-            path_read = f"s3://{bucket_name}/{file_name}.{file_extension}"
+            if source.partition:
+                date = datetime.strptime(source.partition, "%Y-%m-%d")
+                annee = str(date.year).zfill(4)
+                mois = str(date.month).zfill(2)
+                jour = str(date.day).zfill(2)
 
-            print(path_read)
+            partition = f"{annee}{mois}{jour}" if source.partition else None
+            values = [bucket_name, partition, file_name]
+            result = "/".join(str(x) for x in values if x is not None)
+            path_read = f"s3://{result}.{file_extension}"
 
             if file_extension == "csv":
                 with self.fs.open(path_read, "rb") as f:
