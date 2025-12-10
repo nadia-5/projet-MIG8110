@@ -23,4 +23,3 @@ class Transformation(TransformationBase):
         ).with_columns(
                 pl.col("customer_city").replace(self.CITY_MAP, default=pl.col("customer_city")).alias("customer_city")
             )
-        

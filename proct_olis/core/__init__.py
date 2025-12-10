@@ -21,8 +21,6 @@ class TransformationBase:
     process_name: str = ""
     extract_date: str = ""
 
-    print("Base class", process_name, extract_date)
-
     def recursive_substitute(self, item, cfg):
         # Cas 1 : C'est un Dictionnaire -> on descend dedans
         if isinstance(item, dict):

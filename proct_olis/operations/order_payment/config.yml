@@ -4,6 +4,7 @@ sources:
     bucket_name: raw-data
     file_name: order_payments
     file_extension: parquet
+    partition: ${execution_date}
     columns:
       order_id: order_id
       payment_sequential: payment_seq

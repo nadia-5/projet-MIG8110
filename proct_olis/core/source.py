@@ -13,6 +13,7 @@ class Source:
     bucket_name: str| None = field(default=None)
     file_name: str| None = field(default=None)
     file_extension: str| None = field(default=None)
+    partition: str| None = field(default=None)
 
     @classmethod
     def from_data(cls, data: Dict[str, Any]):
@@ -26,6 +27,7 @@ class Source:
             columns=data.get('columns', None),
             bucket_name=data.get('bucket_name', None),
             file_name=data.get('file_name', None),
-            file_extension=data.get('file_extension', None)
+            file_extension=data.get('file_extension', None),
+            partition=data.get('partition', None)
         )
     
