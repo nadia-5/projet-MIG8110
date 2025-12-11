@@ -1,6 +1,5 @@
-from proct_olis.core.transformation import TransformationBase
+from proct_olis.core import TransformationBase
 import polars as pl
-import uuid
 
 class Transformation(TransformationBase):
     process_name: str = "Dim Date Generation"
@@ -21,8 +20,8 @@ class Transformation(TransformationBase):
         df = pl.DataFrame({"date_value": date_range})
 
         self.final_df = df.select([
-            # Génération d'UUID pour respecter votre table (bien que INT soit préférable)
-            pl.col("date_value").map_elements(lambda x: str(uuid.uuid4()), return_dtype=pl.Utf8).alias("date_id"),
+            # date_sk au format YYYYMMDD (ex: 20160101)
+            pl.col("date_value").dt.strftime("%Y%m%d").cast(pl.Int32).alias("date_sk"),
             pl.col("date_value"),
             pl.col("date_value").dt.year().alias("year"),
             pl.col("date_value").dt.quarter().alias("quarter"),

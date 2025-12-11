@@ -52,8 +52,8 @@ transformation = "proct_olis.app:main"
 
 [tool.pdm.scripts]
 _.env_file = ".env"
-infra-up = {shell = "docker compose up -d"}
-infra-down = {shell = "docker compose down -v"}
+infra-up = {shell = "./scripts/docker_utils.sh docker compose up -d"}
+infra-down = {shell = "./scripts/docker_utils.sh docker compose down -v"}
 
 clean-env = { shell = "rm -rf ./infrastructure/.terraform ./infrastructure/.terraform.lock.hcl ./infrastructure/terraform.tfstate ./infrastructure/tfplan ./airflow_config/logs .pdm-build dist" }
 init-tf = {shell = "terraform -chdir=infrastructure init"}
@@ -68,6 +68,7 @@ install-whl = "docker exec --user airflow airflow bash -c 'pip install /opt/airf
 
 load-lake = "docker exec --user airflow airflow bash -c 'python /opt/airflow/scripts/run_simulation.py'"
 load-oltp = "docker exec --user airflow airflow bash -c 'python /opt/airflow/scripts/run_operational.py'"
+load-olap = "docker exec --user airflow airflow bash -c 'python /opt/airflow/scripts/run_datawarehouse.py'"
 
 deploy-tf = { composite = ["init-tf", "plan-tf", "apply-tf"]}
 deploy-lib = { composite = ["clean-dist", "build-lib", "restart-container", "install-whl"]}

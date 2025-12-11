@@ -17,21 +17,28 @@ L’objectif est de construire une architecture modulaire, automatisée et scala
 
 ## Exécution du pipeline
 
-### Cloner le dépôt
+### Deploiement du projet
 `git clone https://github.com/nadia-5/projet-MIG8110`
 
 `cd projet-MIG8110`
 
-`cd terraform`
+Utiliser IDE VSCode de préférence et s'assurer que docker est activer
 
-`terraform init`
+Faire open in container
 
-`terraform plan`
+`pdm install`: installation des dependances
 
-`terraform apply`
+`pdm clean-env`: suppression des fichiers temporaires de l'environnement
 
-`cd..` 
-### chargement des donnée dans minio et BD operationnelle
-`python local_run.iypnb`
+`pdm infra-up`: mise en marche de l'infrastrucutre docker 
 
-`psql -h postgres -U admin -d operations`
+`pdm deploy-tf`: deploiement des ressources terraform (table, views, functions, procedures)
+
+`pdm deploy-lib`: deploiement de la librairie et des dag d'orchestration dans airflow
+
+`pdm load-lake`: chargement des données dans le data lake
+
+`pdm deploy-oltp`: chargement de la bd operationnelle
+
+`pdm deploy-olap`: Chargement du datawarehouse
+

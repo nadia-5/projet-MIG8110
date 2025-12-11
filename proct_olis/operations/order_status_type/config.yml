@@ -13,5 +13,5 @@ destination:
   primary_key: order_status_type_id
   business_keys:
     - order_status_type_code
-  kind: append
+  kind: scd1
   destination_type: postgres_operational

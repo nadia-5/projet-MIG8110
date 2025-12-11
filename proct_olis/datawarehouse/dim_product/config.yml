@@ -1,20 +1,15 @@
 sources:
-  operational.product:
+  audit.logged_actions:
     type: postgres_operational
-    table: product
-    schema: public
+    table: logged_actions
+    schema: audit
+    filter_statement: "table_name = 'product'"
+    watermark_column: action_tstamp_stm
     columns:
-      product_id: product_id
-      product_category_id: product_category_id
-      name_length: name_length
-      description_length: description_length
-      photos_qty: photos_qty
-      weight_g: weight_g
-      length_cm: length_cm
-      height_cm: height_cm
-      width_cm: width_cm
-
-  operational.category:
+      row_data: row_data
+      action_tstamp_stm: action_tstamp_stm
+  
+  operational.product_category:
     type: postgres_operational
     table: product_category
     schema: public
@@ -24,9 +19,9 @@ sources:
 
 destination:
   table: dim_product
-  schema: dw
-  primary_key: product_id
+  schema: public
+  primary_key: product_sk
   business_keys:
     - product_id
-  kind: append # Mettez 'scd2' si votre writer le supporte
+  kind: scd2
   destination_type: postgres_datawarehouse

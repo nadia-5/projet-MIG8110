@@ -59,14 +59,20 @@ with DAG(
         task_id="operations_sellers_items",
         bash_command=f"{base_cmd} --module operations --transformation_name seller"
     )
+
+    order_order_status_type_etl = BashOperator(
+        task_id="operations_order_status",
+        bash_command=f"{base_cmd} --module operations --transformation_name order_status_type"
+    )
     
     
     [geolocation_etl,order_products_etl] >> order_sellers_etl
-    [geolocation_etl,order_products_etl] >>customer_etl
-    [geolocation_etl,order_products_etl] >>order_product_category_name_etl
+    [geolocation_etl,order_products_etl] >> customer_etl
+    [geolocation_etl,order_products_etl] >> order_product_category_name_etl
+    [geolocation_etl,order_products_etl] >> order_order_status_type_etl
     [order_sellers_etl,customer_etl,order_product_category_name_etl] >> order_items_etl
-    [order_sellers_etl,customer_etl,order_product_category_name_etl] >>order_reviews_etl
-    [order_sellers_etl,customer_etl,order_product_category_name_etl] >>order_payments_etl
+    [order_sellers_etl,customer_etl,order_product_category_name_etl] >> order_reviews_etl
+    [order_sellers_etl,customer_etl,order_product_category_name_etl] >> order_payments_etl
     
   
     

@@ -1,20 +1,79 @@
 sources:
-  operational.orders:
+  audit.order:
     type: postgres_operational
-    table: orders
-    schema: public
+    table: logged_actions
+    schema: audit
+    filter_statement: "table_name = 'orders'"
+    watermark_column: action_tstamp_stm
+    columns:
+      row_data: row_data
+      action_tstamp_stm: action_tstamp_stm
   
-  operational.items:
+  audit.order_item:
     type: postgres_operational
-    table: order_item
+    table: logged_actions
+    schema: audit
+    filter_statement: "table_name = 'order_item'"
+    watermark_column: action_tstamp_stm
+    columns:
+      row_data: row_data
+      action_tstamp_stm: action_tstamp_stm
+  
+  # Dimensions pour lookups
+  datawarehouse.dim_customer:
+    type: postgres_datawarehouse
+    table: dim_customer
     schema: public
+    columns:
+      customer_sk: customer_sk
+      customer_id: customer_id
+      customer_zip_code: customer_zip_code
+      customer_city: customer_city
+      customer_state: customer_state
+      is_current: is_current
+  
+  datawarehouse.dim_product:
+    type: postgres_datawarehouse
+    table: dim_product
+    schema: public
+    columns:
+      product_sk: product_sk
+      product_id: product_id
+      is_current: is_current
+  
+  datawarehouse.dim_seller:
+    type: postgres_datawarehouse
+    table: dim_seller
+    schema: public
+    columns:
+      seller_sk: seller_sk
+      seller_id: seller_id
+      is_current: is_current
+  
+  datawarehouse.dim_order_status_type:
+    type: postgres_datawarehouse
+    table: dim_order_status_type
+    schema: public
+    columns:
+      order_status_sk: order_status_sk
+      order_status_type_code: order_status_type_code
+  
+  datawarehouse.dim_location:
+    type: postgres_datawarehouse
+    table: dim_location
+    schema: public
+    columns:
+      location_sk: location_sk
+      zip_code_prefix: zip_code_prefix
+      city: city
+      state: state
 
 destination:
   table: fact_orders
-  schema: dw
+  schema: public
   primary_key: fact_order_id
   business_keys:
     - order_id
-    - order_item_id
+    - item_id
   kind: append
   destination_type: postgres_datawarehouse

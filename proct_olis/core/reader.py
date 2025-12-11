@@ -65,11 +65,16 @@ class S3Reader(BaseReader):
         return entity_map
     
 
+
+from proct_olis.core.watermark import Watermark
+
 class DatabaseReader(BaseReader):
-    def __init__(self, sources: Dict[str, Source], settings: Settings, kind: str):
+    def __init__(self, sources: Dict[str, Source], settings: Settings, kind: str, destination_name: str):
         self.settings = settings
         self.sources = sources
         self.pg_conn = Session(settings, kind=kind).pg_conn
+        self.destination_name = destination_name
+        self.wm = Watermark(settings)
 
     def getDataFrameSources(self) -> Dict[str, pl.DataFrame]:
         entity_map = {}
@@ -78,21 +83,43 @@ class DatabaseReader(BaseReader):
 
             schema = source.schema if source.schema else "public"
             query = f"""SELECT * FROM {schema}.{table_name}"""
-
+            
+            conditions = []
             if source.filter_statement:
-                query += f" WHERE {source.filter_statement}"
+                conditions.append(source.filter_statement)
+            
+            # Watermark Logic
+            if source.watermark_column:
+                last_value = self.wm.get_watermark(
+                    source_name=_name,
+                    destination_name=self.destination_name,
+                    watermark_column=source.watermark_column
+                )
+                if last_value:
+                    # Assuming timestamp or comparable
+                    conditions.append(f"{source.watermark_column} > '{last_value}'")
 
-            df = pl.read_database_uri(query=query, uri=self.pg_conn)
+            if conditions:
+                query += f" WHERE {' AND '.join(conditions)}"
+
+            try:
+                df = pl.read_database_uri(query=query, uri=self.pg_conn)
+            except Exception as e:
+                print(f"Error reading {table_name}: {e}")
+                df = pl.DataFrame()
 
             # Sélection des colonnes avec alias
-            if source.columns:
+            if source.columns and not df.is_empty():
                 # Colonnes originales
                 original_cols = list(source.columns.keys())
                 # Alias
                 aliases = list(source.columns.values())
-
+                
+                # Check if columns exist in df logic could be added here
+                available_cols = [c for c in original_cols if c in df.columns]
+                
                 # Sélection puis renommage
-                df = df.select(original_cols).rename(dict(zip(original_cols, aliases)))
+                df = df.select(available_cols).rename({k:v for k,v in source.columns.items() if k in available_cols})
 
             entity_map[_name] = df
 
@@ -109,6 +136,6 @@ class Reader:
         if self.config.datalake_sources:
             self.source_dataframes.update(S3Reader(self.config.datalake_sources, self.settings).getDataFrameSources())
         if self.config.operational_sources:
-            self.source_dataframes.update(DatabaseReader(self.config.operational_sources, self.settings, "postgres_operational").getDataFrameSources())
+            self.source_dataframes.update(DatabaseReader(self.config.operational_sources, self.settings, "postgres_operational", self.config.destination.table).getDataFrameSources())
         if self.config.datawarehouse_sources:
-            self.source_dataframes.update(DatabaseReader(self.config.datawarehouse_sources, self.settings, "postgres_datawarehouse").getDataFrameSources())
+            self.source_dataframes.update(DatabaseReader(self.config.datawarehouse_sources, self.settings, "postgres_datawarehouse", self.config.destination.table).getDataFrameSources())
