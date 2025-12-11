@@ -9,6 +9,7 @@ resource "postgresql_script" "fact_orders" {
     CREATE TABLE dw.fact_orders (
         fact_order_id SERIAL PRIMARY KEY,
         order_id VARCHAR(50) NOT NULL,
+        order_item_id INTEGER NOT NULL,
         customer_id VARCHAR(50) NOT NULL,    
         product_id VARCHAR(50) NOT NULL,     
         seller_id VARCHAR(50) NOT NULL,         

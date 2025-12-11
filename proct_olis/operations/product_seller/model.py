@@ -1,5 +1,6 @@
 from proct_olis.core.transformation import TransformationBase
 import polars as pl
+import uuid # ⬅️ ADDED: Import uuid
 from datetime import datetime
 
 class Transformation(TransformationBase):
@@ -11,13 +12,18 @@ class Transformation(TransformationBase):
         self.final_df = (
             items_df
             .select([
-                pl.col("product_id"),
-                pl.col("seller_id"),
+                # ⬇️ FIX: Normalize UUIDs
+                pl.col("product_id")
+                    .map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8)
+                    .alias("product_id"),
+                pl.col("seller_id")
+                    .map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8)
+                    .alias("seller_id"),
+                
                 pl.col("price").cast(pl.Float64)
             ])
+            # The 'unique' operation must run AFTER normalization
             .unique(subset=["product_id", "seller_id"], keep="last")
             
-            .with_columns(
-                pl.lit(datetime.now()).alias("inserted_at")
-            )
+            
         )

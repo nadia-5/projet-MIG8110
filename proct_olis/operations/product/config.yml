@@ -28,5 +28,7 @@ destination:
   table: product
   schema: public
   primary_key: product_id
+  business_keys:
+    - product_id       
   kind: append
   destination_type: postgres_operational

@@ -7,6 +7,8 @@ from proct_olis.core.utilities import Utilities
 from datetime import datetime
 from typing import Optional, List
 import sqlalchemy
+from sqlalchemy import text        # ⬅ add this
+import functools     
 
 class WritterBase(ABC):
     def __init__(self, process_name: str, config: Config, settings: Settings, df: pl.DataFrame, execution_date: Optional[str] = None):

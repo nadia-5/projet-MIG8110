@@ -1,5 +1,6 @@
 from proct_olis.core.transformation import TransformationBase 
 import polars as pl
+import uuid # ⬅️ ADD THIS IMPORT
 
 class Transformation(TransformationBase):
     process_name: str = "Order Item Transactional Database Process"
@@ -8,39 +9,22 @@ class Transformation(TransformationBase):
 
         df = self.entity_map.get("datalake.order_items")
 
-        seller_df = self.entity_map.get("operational.seller")
-        product_df = self.entity_map.get("operational.product")
-
-
-        df = (
-            df.join(
-                seller_df,
-                left_on="seller_id",
-                right_on="seller_id",
-                how="left",
-            )
-            .join(
-                product_df,
-                left_on="product_id",
-                right_on="product_id",
-                how="left",
-            )
-        )
+        # Joining here is generally not recommended for transactional tables,
+        # but if required for lookups, ensure IDs are normalized.
 
         df = (
             df.select(
                 [
-                    pl.col("order_id").alias("order_id"),
+                    # ⬇️ FIX: Normalize all UUIDs
+                    pl.col("order_id").map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8).alias("order_id"),
                     pl.col("item_id").alias("item_id"),
-                    pl.col("product_id").alias("product_id"),
-                    pl.col("seller_id").alias("seller_id"),
+                    pl.col("product_id").map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8).alias("product_id"),
+                    pl.col("seller_id").map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8).alias("seller_id"),
                     pl.col("shipping_limit_date").alias("shipping_limit_date"),
                     pl.col("price").alias("price"),
                     pl.col("freight_value").alias("freight_value"),
                 ]
             )
-
-
         )
 
         self.final_df = df

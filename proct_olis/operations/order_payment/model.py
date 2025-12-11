@@ -1,18 +1,15 @@
 from proct_olis.core.transformation import TransformationBase 
 import polars as pl
+import uuid # ⬅️ ADDED: Import uuid
 
 class Transformation(TransformationBase):
     process_name: str = "Order Payment Transactional Database Process"
 
     def transformation(self):
 
-        # ---------- 1. Lire order_payments depuis le datalake ----------
         df = self.entity_map.get("datalake.order_payments")
-
-        # ---------- 2. Lire payment_type depuis l'opérationnel ----------
         payment_type_df = self.entity_map.get("operational.payment_type")
 
-        # ---------- 3. Join pour retrouver le payment_type_id ----------
         df = (
             df.join(
                 payment_type_df,
@@ -22,14 +19,17 @@ class Transformation(TransformationBase):
             )
         )
 
-        # ---------- 4. Sélection + conformisation ----------
         df = (
             df.select(
-                pl.col("order_id"),
-                pl.col("payment_seq"),
-                pl.col("payment_type_id"),
-                pl.col("installments"),
-                pl.col("value"),
+                # ⬇️ FIX: Normalize UUID
+                pl.col("order_id")
+                    .map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8)
+                    .alias("order_id"),
+                
+                pl.col("payment_seq").cast(pl.Int32, strict=False),
+                pl.col("payment_type_id").cast(pl.Int32, strict=False),
+                pl.col("installments").cast(pl.Int32, strict=False),
+                pl.col("value").cast(pl.Float64, strict=False),
             )
 
         )

@@ -25,7 +25,7 @@ from proct_olis.core.session import Session  # ⬅️ pour vérifier les fichier
 
 # --- CONFIGURATION ---
 START_DATE = date(2016, 9, 4)
-END_DATE = date(2016, 10, 5)
+END_DATE = date(2018, 8, 29)
 
 # Mode debug : traiter seulement les X premiers jours
 DEBUG_MODE = False

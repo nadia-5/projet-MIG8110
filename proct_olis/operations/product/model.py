@@ -1,6 +1,6 @@
 from proct_olis.core.transformation import TransformationBase 
 import polars as pl
-
+import uuid  # ⬅️ ADD THIS IMPORT
 
 class Transformation(TransformationBase):
     process_name: str = "Product Transactional Database Process"
@@ -18,7 +18,9 @@ class Transformation(TransformationBase):
                 how="left",
             )
             .select(
-                pl.col("product_id"),
+                # ⬇️ FIX: Normalize product_id to standard UUID format (with hyphens)
+                pl.col("product_id").map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8),
+                
                 pl.col("product_category_id"),
                 pl.col("name_length"),
                 pl.col("description_length"),

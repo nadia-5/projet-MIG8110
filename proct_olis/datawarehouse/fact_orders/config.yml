@@ -3,11 +3,29 @@ sources:
     type: postgres_operational
     table: orders
     schema: public
-  
+
   operational.items:
     type: postgres_operational
     table: order_item
     schema: public
+
+  datawarehouse.dim_date:
+    type: postgres_datawarehouse
+    table: dim_date
+    schema: dw
+    columns:
+      date_id: date_id
+      date_value: date_value
+
+  datawarehouse.dim_location:
+    type: postgres_datawarehouse
+    table: dim_location
+    schema: dw
+    columns:
+      location_id: location_id
+      zip_code_prefix: zip_code    # DB column → DF column
+      city: city
+      state: state
 
 destination:
   table: fact_orders

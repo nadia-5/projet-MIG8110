@@ -1,6 +1,6 @@
 from proct_olis.core.transformation import TransformationBase
 import polars as pl
-
+import uuid  # ⬅️ ADDED: Import uuid for normalization
 
 class Transformation(TransformationBase):
     process_name: str = "Order Transactional Database Process"
@@ -26,10 +26,20 @@ class Transformation(TransformationBase):
 
         df = orders_df.with_columns(
             [
+                # ⬇️ FIX: Normalize UUIDs
+                pl.col("order_id")
+                    .map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8)
+                    .alias("order_id"),
+                pl.col("customer_id")
+                    .map_elements(lambda x: str(uuid.UUID(x)), return_dtype=pl.Utf8)
+                    .alias("customer_id"),
+
                 pl.col("order_status")
                 .replace(status_mapping)
+                .cast(pl.Int32, strict=False) # Ensure type consistency with DB
                 .fill_null(1)
                 .alias("status_id"),
+                
                 pl.col("order_purchase_timestamp").alias("purchase_date"),
                 pl.col("order_approved_at").alias("approved_date"),
                 pl.col("order_estimated_delivery_date").alias(
