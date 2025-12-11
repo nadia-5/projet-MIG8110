@@ -6,17 +6,20 @@ commands = [
     ,
     <<-EOT
     CREATE TABLE dim_date (
-        date_id uuid PRIMARY KEY,
-        date_value date NOT NULL,
-        year integer NOT NULL,
-        quarter integer NOT NULL,
-        month integer NOT NULL,
-        day integer NOT NULL,
-        week_of_year integer NOT NULL,
-        day_of_week integer NOT NULL,
-        is_weekend boolean NOT NULL,
-        rowhash varchar(64) not null
+        date_sk INTEGER PRIMARY KEY,
+        date_value DATE NOT NULL,
+        year INTEGER NOT NULL,
+        quarter INTEGER NOT NULL,
+        month INTEGER NOT NULL,
+        day INTEGER NOT NULL,
+        week_of_year INTEGER NOT NULL,
+        day_of_week INTEGER NOT NULL,
+        is_weekend BOOLEAN NOT NULL,
+        inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        rowhash VARCHAR(64) NOT NULL
     );
+    CREATE INDEX idx_dim_date_value ON dim_date(date_value);
     EOT
   ]
 }

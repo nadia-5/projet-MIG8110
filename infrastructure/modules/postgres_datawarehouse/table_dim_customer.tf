@@ -6,16 +6,21 @@ commands = [
     ,
     <<-EOT
     CREATE TABLE dim_customer (
-        customer_id VARCHAR(50) PRIMARY KEY,
-        customer_code varchar(32) NOT NULL,
-        customer_state char(2),
-        customer_city varchar(64),
-        customer_zip_code varchar(16),
-        valid_from timestamp not null,
-        valid_to timestamp,
-        is_current boolean not null,
-        rowhash varchar(64) not null
+        customer_sk SERIAL PRIMARY KEY,
+        customer_id VARCHAR(50) NOT NULL,
+        customer_code VARCHAR(32),
+        customer_state CHAR(2),
+        customer_city VARCHAR(64),
+        customer_zip_code VARCHAR(16),
+        valid_from TIMESTAMP NOT NULL,
+        valid_to TIMESTAMP,
+        is_current BOOLEAN NOT NULL DEFAULT TRUE,
+        inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        rowhash VARCHAR(64) NOT NULL
     );
+    CREATE INDEX idx_dim_customer_id ON dim_customer(customer_id);
+    CREATE INDEX idx_dim_customer_current ON dim_customer(customer_id) WHERE is_current = TRUE;
     EOT
   ]
 }

@@ -3,17 +3,18 @@ sources:
     type: postgres_operational
     table: logged_actions
     schema: audit
-    filter_statement: "table_name = 'customer'"
+    filter_statement: "table_name = 'order_item'"
     watermark_column: action_tstamp_stm
     columns:
       row_data: row_data
       action_tstamp_stm: action_tstamp_stm
 
 destination:
-  table: dim_customer
+  table: dim_product_seller_price
   schema: public
-  primary_key: customer_sk
+  primary_key: price_sk
   business_keys:
-    - customer_code
+    - product_id
+    - seller_id
   kind: scd2
   destination_type: postgres_datawarehouse

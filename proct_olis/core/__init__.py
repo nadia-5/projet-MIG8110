@@ -11,6 +11,7 @@ from proct_olis.core.reader import Reader
 from proct_olis.settings import Settings
 from proct_olis.core.writter import Writter
 from proct_olis.core.utilities import Utilities
+from datetime import datetime
 
 @dataclass
 class TransformationBase:
@@ -20,6 +21,7 @@ class TransformationBase:
     settings: Settings | None = None
     process_name: str = ""
     extract_date: str = ""
+    watermark_value: datetime | None = None
 
     def recursive_substitute(self, item, cfg):
         # Cas 1 : C'est un Dictionnaire -> on descend dedans
@@ -96,7 +98,7 @@ class TransformationBase:
         raise NotImplementedError
 
     def write(self):
-        writter = Writter(self.process_name, self.final_df, self.config, self.settings)
+        writter = Writter(self.process_name, self.final_df, self.config, self.settings, self.watermark_value)
         writter.write()
     
     def process(self):

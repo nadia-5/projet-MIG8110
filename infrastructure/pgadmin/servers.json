@@ -1,0 +1,22 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Operational DB",
+            "Group": "Servers",
+            "Port": 5432,
+            "Username": "admin",
+            "Host": "postgres",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "postgres"
+        },
+        "2": {
+            "Name": "Data Warehouse",
+            "Group": "Servers",
+            "Port": 5432,
+            "Username": "admin",
+            "Host": "postgres_dw",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "postgres"
+        }
+    }
+}
