@@ -4,6 +4,7 @@ sources:
     bucket_name: raw-data
     file_name: products
     file_extension: parquet
+    partition: ${execution_date}
     columns:
       product_category_name: product_category_name
     filter_statement: "product_category_name is not null"

@@ -1,0 +1,19 @@
+sources:
+  audit.logged_actions:
+    type: postgres_operational
+    table: logged_actions
+    schema: audit
+    filter_statement: "table_name = 'customer'"
+    watermark_column: action_tstamp_stm
+    columns:
+      row_data: row_data
+      action_tstamp_stm: action_tstamp_stm
+
+destination:
+  table: dim_customer
+  schema: public
+  primary_key: customer_sk
+  business_keys:
+    - customer_code
+  kind: scd2
+  destination_type: postgres_datawarehouse

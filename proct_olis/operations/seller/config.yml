@@ -4,6 +4,7 @@ sources:
     bucket_name: raw-data
     file_name: sellers
     file_extension: parquet
+    partition: ${execution_date}
     columns:
       seller_id: seller_id
       seller_zip_code_prefix: seller_zip_code

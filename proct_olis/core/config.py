@@ -18,7 +18,7 @@ class Config:
     def load_config(cls, path: str):
         with open(path, 'r') as f:
             data = yaml.safe_load(f)
-        return cls.from_data(data)
+        return data
 
     @classmethod
     def from_data(cls, data: Dict[str, Any]):

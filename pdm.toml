@@ -1,1 +1,3 @@
-venv.with_pip = "True"
+[venv]
+in_project = true
+with_pip = true

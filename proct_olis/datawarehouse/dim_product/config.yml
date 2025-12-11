@@ -1,0 +1,27 @@
+sources:
+  audit.logged_actions:
+    type: postgres_operational
+    table: logged_actions
+    schema: audit
+    filter_statement: "table_name = 'product'"
+    watermark_column: action_tstamp_stm
+    columns:
+      row_data: row_data
+      action_tstamp_stm: action_tstamp_stm
+  
+  operational.product_category:
+    type: postgres_operational
+    table: product_category
+    schema: public
+    columns:
+      product_category_id: product_category_id
+      product_category_name: product_category_name
+
+destination:
+  table: dim_product
+  schema: public
+  primary_key: product_sk
+  business_keys:
+    - product_id
+  kind: scd2
+  destination_type: postgres_datawarehouse

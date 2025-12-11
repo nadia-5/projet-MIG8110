@@ -31,19 +31,19 @@ class Settings:
     def replace_placeholders(self):
         load_dotenv()
         config = {
-            "minio_endpoint": os.getenv("MINIO_ENDPOINT"),
-            "minio_access_key": os.getenv("MINIO_ACCESS_KEY"),
-            "minio_secret_key": os.getenv("MINIO_SECRET_KEY"),
-            "postgres_host": os.getenv("POSTGRES_HOST"),
-            "postgres_port": os.getenv("POSTGRES_PORT"),
-            "postgres_database": os.getenv("POSTGRES_DATABASE"),
-            "postgres_user": os.getenv("POSTGRES_USER"),
-            "postgres_password": os.getenv("POSTGRES_PASSWORD"),
-            "postgres_dw_host": os.getenv("POSTGRES_DW_HOST"),
-            "postgres_dw_port": os.getenv("POSTGRES_DW_PORT"),
-            "postgres_dw_database": os.getenv("POSTGRES_DW_DATABASE"),
-            "postgres_dw_user": os.getenv("POSTGRES_DW_USER"),
-            "postgres_dw_password": os.getenv("POSTGRES_DW_PASSWORD"),
+            "minio_endpoint": os.getenv("TF_VAR_MINIO_ENDPOINT"),
+            "minio_access_key": os.getenv("TF_VAR_MINIO_ACCESS_KEY"),
+            "minio_secret_key": os.getenv("TF_VAR_MINIO_SECRET_KEY"),
+            "postgres_host": os.getenv("TF_VAR_POSTGRES_HOST"),
+            "postgres_port": os.getenv("TF_VAR_POSTGRES_PORT"),
+            "postgres_database": os.getenv("TF_VAR_POSTGRES_DATABASE"),
+            "postgres_user": os.getenv("TF_VAR_POSTGRES_USER"),
+            "postgres_password": os.getenv("TF_VAR_POSTGRES_PASSWORD"),
+            "postgres_dw_host": os.getenv("TF_VAR_POSTGRES_DW_HOST"),
+            "postgres_dw_port": os.getenv("TF_VAR_POSTGRES_DW_PORT"),
+            "postgres_dw_database": os.getenv("TF_VAR_POSTGRES_DW_DATABASE"),
+            "postgres_dw_user": os.getenv("TF_VAR_POSTGRES_DW_USER"),
+            "postgres_dw_password": os.getenv("TF_VAR_POSTGRES_DW_PASSWORD"),
         }
         for key, value in self.settings.items():
             if isinstance(value, dict):

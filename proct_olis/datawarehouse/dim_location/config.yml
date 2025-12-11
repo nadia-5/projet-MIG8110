@@ -1,0 +1,21 @@
+sources:
+  audit.logged_actions:
+    type: postgres_operational
+    table: logged_actions
+    schema: audit
+    filter_statement: "table_name = 'location'"
+    watermark_column: action_tstamp_stm
+    columns:
+      row_data: row_data
+      action_tstamp_stm: action_tstamp_stm
+
+destination:
+  table: dim_location
+  schema: public
+  primary_key: location_sk
+  business_keys:
+    - zip_code_prefix
+    - city
+    - state
+  kind: scd1
+  destination_type: postgres_datawarehouse

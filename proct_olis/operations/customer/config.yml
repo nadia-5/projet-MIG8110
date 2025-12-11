@@ -4,6 +4,7 @@ sources:
     bucket_name: raw-data
     file_name: customers
     file_extension: parquet
+    partition: ${execution_date}
     columns:
       customer_id: customer_id
       customer_unique_id: customer_code

@@ -1,0 +1,10 @@
+sources: {}
+
+destination:
+  table: dim_date
+  schema: public
+  primary_key: date_sk
+  business_keys:
+    - date_value
+  kind: append
+  destination_type: postgres_datawarehouse

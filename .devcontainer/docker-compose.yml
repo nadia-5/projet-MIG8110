@@ -1,0 +1,16 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - env_dev:/workspace
+    tty: true
+
+volumes:
+  env_dev:
+
+networks:
+  default:
+    # Remplace par le nom EXACT trouvé à l'étape 1
+    name: projet-mig8110_devcontainer_default

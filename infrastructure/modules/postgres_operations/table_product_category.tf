@@ -1,0 +1,23 @@
+resource "postgresql_script" "product_category" {
+commands = [
+    <<-EOT
+    DROP TABLE IF EXISTS product_category cascade;
+    EOT
+    ,
+    <<-EOT
+    CREATE TABLE product_category (
+    product_category_id serial primary key,
+    product_category_name varchar(255) unique not null,
+    translation_name_en varchar(255),
+    product_category_description varchar(255),
+    inserted_at timestamp not null,
+    constraint chk_product_category_name_lower check (product_category_name = lower(product_category_name))
+    );
+    EOT
+    ,
+        <<-EOT
+    SELECT audit.audit_table('public.product_category');
+    EOT
+  ]
+    depends_on = [ postgresql_function.audit_table ]
+}

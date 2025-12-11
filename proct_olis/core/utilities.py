@@ -5,7 +5,7 @@ class Utilities:
 
     def calculate_hash_based_on_columns(self, df: pl.DataFrame, columns: list[str]) -> pl.DataFrame:
         concat_columns = pl.concat_str([pl.col(col).cast(pl.Utf8) for col in sorted(columns)], separator="|")
-        return df.with_columns(concat_columns.hash().alias("hash_key")) 
+        return df.with_columns(concat_columns.hash().cast(pl.Utf8).alias("hash_key")) 
 
     def add_primary_key(self, df: pl.DataFrame, mode: str = "auto", primary_key: str = "pk", business_keys: list[str] = None) -> pl.DataFrame:
 

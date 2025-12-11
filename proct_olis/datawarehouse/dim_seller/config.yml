@@ -1,0 +1,19 @@
+sources:
+  audit.logged_actions:
+    type: postgres_operational
+    table: logged_actions
+    schema: audit
+    filter_statement: "table_name = 'seller'"
+    watermark_column: action_tstamp_stm
+    columns:
+      row_data: row_data
+      action_tstamp_stm: action_tstamp_stm
+
+destination:
+  table: dim_seller
+  schema: public
+  primary_key: seller_sk
+  business_keys:
+    - seller_id
+  kind: scd2
+  destination_type: postgres_datawarehouse

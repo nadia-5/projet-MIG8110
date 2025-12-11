@@ -4,6 +4,7 @@ sources:
     bucket_name: raw-data
     file_name: order_reviews
     file_extension: parquet
+    partition: ${execution_date}
     columns:
       review_id: review_id
       order_id: order_id
